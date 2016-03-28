@@ -22,6 +22,7 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     private Context context;
     private int resourse;
     private ArrayList<AlarmModel> items;
+    public int setHour,setMinute;
 
 
     @Override
@@ -45,6 +46,8 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
                         ////// asıl işlem burada yapılacak
+                        setHour = hourOfDay;
+                        setMinute = minute;
                     }
                 }, 0, 0, true);
                 tpd.setTitle("Saat Seçiniz");
