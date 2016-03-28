@@ -10,45 +10,90 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView alarmsList;
-    ArrayList<AlarmModel> alarms;
-    Button btnAlarmTime;
-    boolean bs;
+        private ArrayList<AlarmModel> alarms=new ArrayList<AlarmModel>();
+        private ListView alarmList;
+        private Button btnAlarmTime;
+        //private MySharedPreferences sp;
+        private AlarmDbHelper alarmdb;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        bs=true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        setSupportActionBar(toolbar);
+            //sp = new MySharedPreferences(MainActivity.this);
+            //sp.editor.putInt("alarmId",-1);
+            //sp.editor.commit();
 
-
-        btnAlarmTime = (Button) findViewById(R.id.btnAlarmTime);
-        alarms = new ArrayList<AlarmModel>();
-        alarms.add(new AlarmModel());
-        alarmsList = (ListView)findViewById(R.id.alarmList);
-        AlarmAdapter adapter = new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
-        alarmsList.setAdapter(adapter);
+            AlarmModel alarm=new AlarmModel();
+            InsertDummyData(alarm);
+            GetDummyData();//sql lite ile kayıtlı attached alarmları alarms listesine atar
+            //adaptor işlemleri
 
 
+            alarmList=(ListView)findViewById(R.id.alarmList);
+            AlarmAdapter adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
+            alarmList.setAdapter(adapter);
 
+            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
+        }
+
+    private void InsertDummyData(AlarmModel alarm)
+    {
+        alarmdb=new AlarmDbHelper(MainActivity.this);
+        boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(),alarm.getHour(),alarm.getMinute()
+                ,alarm.isMonday(),alarm.isTuesday(),alarm.isWednesday(),alarm.isThursday(),alarm.isFriday(),
+                alarm.isSaturday(),alarm.isSunday(),alarm.isActive());
+
+        if(result==true)
+        {
+            Toast.makeText(MainActivity.this, "Kayıt başarıyla eklendi.", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(MainActivity.this,"Kayıt Ekleme Başarısız",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void GetDummyData()
+    {
+        alarmdb=new AlarmDbHelper(MainActivity.this);
+        alarms=alarmdb.GetAttachedAlarm();
+    }
+
+    private void UpdateDummyData(AlarmModel alarm)
+    {
+        alarmdb=new AlarmDbHelper(MainActivity.this);
+        boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
+                , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
+                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
+        if(result==true)
+        {
+            Toast.makeText(MainActivity.this, "Güncelleme başarıyla eklendi.", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(MainActivity.this,"Güncelleme Ekleme Başarısız",Toast.LENGTH_LONG).show();
+        }
 
     }
 
 }
+
+

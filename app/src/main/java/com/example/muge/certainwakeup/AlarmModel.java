@@ -10,6 +10,7 @@ import java.sql.Time;
  * Created by muge on 22.3.2016.
  */
 public class AlarmModel {
+    private int id;
     private int hour;
     private int minute;
     private boolean monday;
@@ -20,10 +21,29 @@ public class AlarmModel {
     private boolean saturday;
     private boolean sunday;
     private boolean isActive;
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public int getHour() {
+        return hour;
+    }
 
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
 
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
     public boolean isMonday() {
         return monday;
     }
@@ -88,22 +108,34 @@ public class AlarmModel {
         this.isActive = isActive;
     }
 
-    public int getHour() {
-        return hour;
+    public AlarmModel(){
+        setId(1);
+        setHour(8);
+        setMinute(0);
+        setFriday(true);
+        setMonday(true);
+        setIsActive(false);
+        setSaturday(true);
+        setThursday(true);
+        setWednesday(true);
+        setTuesday(true);
+        setSunday(false);
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    public AlarmModel(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
+    {
+        setId(id);
+        setHour(hour);
+        setMinute(minute);
+        setFriday(fri);
+        setMonday(mon);
+        setIsActive(act);
+        setSaturday(str);
+        setThursday(thu);
+        setWednesday(wed);
+        setTuesday(thu);
+        setSunday(sun);
     }
-
-    public int getMinute() {
-        return minute;
-    }
-
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
     @Override
     public String toString() {
         if (getHour()<10&&getMinute()<10)
@@ -114,20 +146,5 @@ public class AlarmModel {
             return getMinute()+" : 0"+getMinute();
         return getHour()+" : "+getMinute();
     }
-
-    public AlarmModel()
-    {
-        setHour(8);
-        setMinute(8);
-        setMonday(true);
-        setTuesday(true);
-        setWednesday(true);
-        setThursday(true);
-        setFriday(true);
-        setSaturday(false);
-        setSunday(false);
-        setIsActive(false);
-    }
-
 
 }
