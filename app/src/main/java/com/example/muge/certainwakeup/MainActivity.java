@@ -18,10 +18,11 @@ public class MainActivity extends AppCompatActivity {
     ListView alarmsList;
     ArrayList<AlarmModel> alarms;
     Button btnAlarmTime;
-
+    boolean bs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        bs=true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
