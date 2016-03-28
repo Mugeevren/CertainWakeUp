@@ -1,5 +1,6 @@
 package com.example.muge.certainwakeup;
 
+import android.app.ExpandableListActivity;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
             //sp.editor.commit();
 
             AlarmModel alarm=new AlarmModel();
-            InsertDummyData(alarm);
-            GetDummyData();//sql lite ile kayıtlı attached alarmları alarms listesine atar
-            //adaptor işlemleri
+            insertDefaultAlarm(alarm);
+            getAlarms();//sql lite ile kayıtlı attached alarmları alarms listesine atar
 
+            //adaptor işlemleri
 
             alarmList=(ListView)findViewById(R.id.alarmList);
             AlarmAdapter adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
@@ -54,24 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-    private void InsertDummyData(AlarmModel alarm)
+    private void insertDefaultAlarm(AlarmModel alarm)
     {
         alarmdb=new AlarmDbHelper(MainActivity.this);
         boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(),alarm.getHour(),alarm.getMinute()
                 ,alarm.isMonday(),alarm.isTuesday(),alarm.isWednesday(),alarm.isThursday(),alarm.isFriday(),
                 alarm.isSaturday(),alarm.isSunday(),alarm.isActive());
 
-        if(result==true)
-        {
-            Toast.makeText(MainActivity.this, "Kayıt başarıyla eklendi.", Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(MainActivity.this,"Kayıt Ekleme Başarısız",Toast.LENGTH_LONG).show();
-        }
     }
 
-    private void GetDummyData()
+    private void getAlarms()
     {
         alarmdb=new AlarmDbHelper(MainActivity.this);
         alarms=alarmdb.GetAttachedAlarm();
@@ -85,11 +78,11 @@ public class MainActivity extends AppCompatActivity {
                 alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
         if(result==true)
         {
-            Toast.makeText(MainActivity.this, "Güncelleme başarıyla eklendi.", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Güncelleme başarıyla eklendi.", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(MainActivity.this,"Güncelleme Ekleme Başarısız",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"Güncelleme Ekleme Başarısız",Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -11,11 +11,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginTop="3dp"
         android:orientation="horizontal">
 
         <Button
@@ -24,11 +24,13 @@
             android:layout_height="wrap_content"
             style="@style/medium_light"
             android:textSize="@dimen/alarm_time_font_size"
-            android:textColor="@color/clock_white"
-            android:background="@color/black"
+            android:textColor="@color/time_text_color"
+            android:textColorHighlight="@color/light_green_200"
+            android:background="@color/light_green_100"
             android:baselineAligned="true"
             android:layout_gravity="center"
             android:gravity="center"
+            android:textStyle="bold"
 
             />
         <TextView
@@ -45,14 +47,29 @@
             android:layout_height="match_parent"
             android:id="@+id/onoff"
             android:thumbTextPadding="10dp"
-            android:layout_gravity="center_vertical|end"/>
+            android:shadowColor="@color/light_green_100"
+            android:textColor="@color/time_text_color"
+            android:textColorHighlight="@color/light_green_300"
+            android:background="@color/light_green_100"
+            android:layout_gravity="center_vertical|end"
+            style="@style/Widget.AppCompat.CompoundButton.Switch"/>
 
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
+        <ToggleButton
+            android:id="@+id/toggleFrameActivate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/toggle_underline"
+            android:background="@color/light_green_100"
+            android:textOn="^"
+            android:textOff="Detail "
+            android:textStyle="bold"
+            android:textColor="@color/time_text_color"/>
+        <ImageButton
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +81,8 @@
             android:paddingStart="8dp"
             android:contentDescription="@string/delete_alarm"
             android:src="@drawable/ic_delete"
-            android:layout_gravity="top|end" />
+            android:layout_gravity="top|end"
+            android:background="@color/light_green_100"/>
 
         <LinearLayout
             android:id="@+id/expand_area"
@@ -73,8 +91,10 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_marginBottom="@dimen/collapse_expand_height"
-            android:layout_gravity="bottom">
-            <TextView
+            android:layout_gravity="fill_horizontal"
+            android:backgroundTint="@color/light_green_50"
+            >
+            <!--<TextView
                 android:id="@+id/edit_label"
                 style="@style/body_not_caps"
                 android:textColor="@color/clock_gray"
@@ -91,20 +111,26 @@
                 android:paddingBottom="12dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:background="@drawable/item_background" />
+                android:background="@drawable/item_background" />-->
             <!--tekrarlama seçeneği-->
+
             <CheckBox
                 android:id="@+id/repeat_onoff"
                 android:text="@string/alarm_repeat"
-                android:layout_height="48dp"
+                android:textAllCaps="false"
+                android:textSize="15dp"
+                android:layout_height="20dp"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_gravity="center_vertical|start"
+                android:layout_gravity="center_vertical|center"
                 style="@style/body"
-                android:textColor="@color/black"/>
+                android:textColor="@color/time_text_color"
+                android:textColorHighlight="@color/light_green_300"
+                android:shadowColor="@color/time_text_color"
+                />
 
             <!--haftanın günleri seçim alanı-->
             <LinearLayout
@@ -119,6 +145,30 @@
                 android:orientation="horizontal"
                 android:visibility="gone"
                 >
+
+                <ToggleButton
+                    android:id="@+id/toggleMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/toggle_underline"
+                    android:background="@color/light_green_200"
+                    android:padding="5dp"
+                    android:textOn="Mon"
+                    style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
+                    android:textOff="Mon"
+                    android:textColor="@color/time_text_color"/>
+                <ToggleButton
+                    android:id="@+id/toggleTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/toggle_underline"
+                    android:background="@color/light_green_200"
+                    android:padding="5dp"
+                    android:textOn="Tues"
+                    android:textOff="Tues"
+                    android:textColor="@color/time_text_color"/>
+
+                <!--Haftanın diğer günleri eklenecek-->
                 <!-- Day buttons are put here programatically -->
             </LinearLayout>
 
