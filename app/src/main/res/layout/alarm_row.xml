@@ -26,7 +26,7 @@
             android:textSize="@dimen/alarm_time_font_size"
             android:textColor="@color/time_text_color"
             android:textColorHighlight="@color/light_green_200"
-            android:background="@color/light_green_100"
+            android:background="@color/deep_orange_800"
             android:baselineAligned="true"
             android:layout_gravity="center"
             android:gravity="center"
@@ -50,7 +50,7 @@
             android:shadowColor="@color/light_green_100"
             android:textColor="@color/time_text_color"
             android:textColorHighlight="@color/light_green_300"
-            android:background="@color/light_green_100"
+            android:background="@color/deep_orange_800"
             android:layout_gravity="center_vertical|end"
             style="@style/Widget.AppCompat.CompoundButton.Switch"/>
 
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/toggle_underline"
-            android:background="@color/light_green_100"
+            android:background="@color/deep_orange_800"
             android:textOn="^"
             android:textOff="Detail "
             android:textStyle="bold"
@@ -82,7 +82,7 @@
             android:contentDescription="@string/delete_alarm"
             android:src="@drawable/ic_delete"
             android:layout_gravity="top|end"
-            android:background="@color/light_green_100"/>
+            android:background="@color/deep_orange_800"/>
 
         <LinearLayout
             android:id="@+id/expand_area"
@@ -90,9 +90,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="@dimen/collapse_expand_height"
             android:layout_gravity="fill_horizontal"
-            android:backgroundTint="@color/light_green_50"
+            android:backgroundTint="@color/deep_orange_900"
             >
             <!--<TextView
                 android:id="@+id/edit_label"
@@ -151,7 +152,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/toggle_underline"
-                    android:background="@color/light_green_200"
+                    android:background="@color/deep_orange_800"
                     android:padding="5dp"
                     android:textOn="Mon"
                     style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
@@ -162,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/toggle_underline"
-                    android:background="@color/light_green_200"
+                    android:background="@color/deep_orange_800"
                     android:padding="5dp"
                     android:textOn="Tues"
                     android:textOff="Tues"

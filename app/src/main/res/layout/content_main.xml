@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.muge.certainwakeup.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:background="@color/light_green_100">
+    android:background="@color/deep_orange_800">
 
     <ListView
         android:id="@+id/alarmList"

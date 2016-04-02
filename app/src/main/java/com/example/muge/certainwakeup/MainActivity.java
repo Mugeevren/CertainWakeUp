@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         private ArrayList<AlarmModel> alarms=new ArrayList<AlarmModel>();
         private ListView alarmList;
-        private Button btnAlarmTime;
+        private ImageButton addAlarm;
         //private MySharedPreferences sp;
         private AlarmDbHelper alarmdb;
 
@@ -34,12 +35,13 @@ public class MainActivity extends AppCompatActivity {
             //sp.editor.putInt("alarmId",-1);
             //sp.editor.commit();
 
+            addAlarm = (ImageButton)findViewById(R.id.addAlarm);//Bu buttonun onClick içine yeni alarm sayfası için Intend oluşturulacak
+
             AlarmModel alarm=new AlarmModel();
             insertDefaultAlarm(alarm);
             getAlarms();//sql lite ile kayıtlı attached alarmları alarms listesine atar
 
             //adaptor işlemleri
-
             alarmList=(ListView)findViewById(R.id.alarmList);
             AlarmAdapter adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
             alarmList.setAdapter(adapter);
