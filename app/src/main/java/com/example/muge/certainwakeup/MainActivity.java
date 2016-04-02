@@ -35,7 +35,15 @@ public class MainActivity extends AppCompatActivity {
             //sp.editor.putInt("alarmId",-1);
             //sp.editor.commit();
 
-            addAlarm = (ImageButton)findViewById(R.id.addAlarm);//Bu buttonun onClick içine yeni alarm sayfası için Intend oluşturulacak
+            addAlarm = (ImageButton)findViewById(R.id.addAlarm);
+            addAlarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //yani aktivity'e yönlendirme için intent
+
+
+                }
+            });
 
             AlarmModel alarm=new AlarmModel();
             insertDefaultAlarm(alarm);
