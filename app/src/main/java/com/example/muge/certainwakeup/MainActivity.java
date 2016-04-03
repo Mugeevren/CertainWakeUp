@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         private ListView alarmList;
         private ImageButton addAlarm;
         //private MySharedPreferences sp;
-        private AlarmDbHelper alarmdb;
+        private AlarmDbHelper alarmdb = new AlarmDbHelper(MainActivity.this);
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +45,39 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+
+            alarmdb.deleteAll();
+            AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
+            insertDefaultAlarm(alarm1);
+            AlarmModel alarm2 = new AlarmModel(3,11,30,true,false,false,false,false,false,false,true);
             AlarmModel alarm=new AlarmModel();
             insertDefaultAlarm(alarm);
+            insertDefaultAlarm(alarm2);
+            AlarmModel alarm3 = new AlarmModel(4,21,30,true,false,false,false,false,false,false,true);
+            AlarmModel alarm4=new AlarmModel(5,22,30,true,true,false,false,false,false,false,true);
+            insertDefaultAlarm(alarm3);
+            insertDefaultAlarm(alarm4);
+            AlarmModel alarm5 = new AlarmModel(6,23,30,true,false,false,false,false,false,false,true);
+            AlarmModel alarm6=new AlarmModel(7,00,30,true,true,false,false,false,false,false,true);
+            insertDefaultAlarm(alarm5);
+            insertDefaultAlarm(alarm6);
+
+            /*
+            alarmdb.deleteAll();
+            AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
+            AlarmModel alarm=new AlarmModel();
+            insertDefaultAlarm(alarm);
+            insertDefaultAlarm(alarm1);
+            */
+
             getAlarms();//sql lite ile kayıtlı attached alarmları alarms listesine atar
 
             //adaptor işlemleri
             alarmList=(ListView)findViewById(R.id.alarmList);
             AlarmAdapter adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
             alarmList.setAdapter(adapter);
+
+
 
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     private void getAlarms()
     {
         alarmdb=new AlarmDbHelper(MainActivity.this);
-        alarms=alarmdb.GetAttachedAlarm();
+        alarmdb.GetAttachedAlarm(alarms);
     }
 
     private void UpdateDummyData(AlarmModel alarm)

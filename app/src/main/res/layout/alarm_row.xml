@@ -115,6 +115,7 @@
                 android:background="@drawable/item_background" />-->
             <!--tekrarlama seçeneği-->
 
+            <!--
             <CheckBox
                 android:id="@+id/repeat_onoff"
                 android:text="@string/alarm_repeat"
@@ -132,6 +133,11 @@
                 android:textColorHighlight="@color/light_green_300"
                 android:shadowColor="@color/time_text_color"
                 />
+                -->
+            <Space
+                android:layout_height="20dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"/>
 
             <!--haftanın günleri seçim alanı-->
             <LinearLayout
@@ -144,33 +150,78 @@
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="top"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 >
 
                 <ToggleButton
                     android:id="@+id/toggleMonday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
                     android:src="@drawable/toggle_underline"
-                    android:background="@color/deep_orange_800"
-                    android:padding="5dp"
+                    android:padding="2dp"
                     android:textOn="Mon"
-                    style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
                     android:textOff="Mon"
+                    android:textSize="10dp"
+                    style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
                     android:textColor="@color/time_text_color"/>
                 <ToggleButton
                     android:id="@+id/toggleTuesday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
                     android:src="@drawable/toggle_underline"
-                    android:background="@color/deep_orange_800"
-                    android:padding="5dp"
-                    android:textOn="Tues"
-                    android:textOff="Tues"
-                    android:textColor="@color/time_text_color"/>
+                    android:textColor="@color/time_text_color"
+                    android:textOn="Tue"
+                    android:textOff="Tue"
+                    android:textSize="10dp"
+                    />
+                <ToggleButton
+                    android:id="@+id/toggleWednesday"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/toggle_underline"
+                    android:textColor="@color/time_text_color"
+                    android:textOn="Wed"
+                    android:textOff="Wed"
+                    android:textSize="10dp"/>
+                <ToggleButton
+                    android:id="@+id/toggleThursday"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/toggle_underline"
+                    android:padding="2dp"
+                    android:textOn="Thu"
+                    android:textOff="Thu"
+                    style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
+                    android:textColor="@color/time_text_color"
+                    android:textSize="10dp"/>
+                <ToggleButton
+                    android:id="@+id/toggleFriday"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/toggle_underline"
+                    android:textColor="@color/time_text_color"
+                    android:textOn="Fri"
+                    android:textOff="Fri"
+                    android:textSize="10dp"
+                    />
+                <ToggleButton
+                android:id="@+id/toggleSaturday"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:src="@drawable/toggle_underline"
+                android:textColor="@color/time_text_color"
+                android:textOn="Sat"
+                android:textOff="Sat"
+                android:textSize="10dp"/>
+                <ToggleButton
+                    android:id="@+id/toggleSunday"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/toggle_underline"
+                    android:textColor="@color/time_text_color"
+                    android:textOn="Sun"
+                    android:textOff="Sun"
+                    android:textSize="10dp"/>
 
-                <!--Haftanın diğer günleri eklenecek-->
-                <!-- Day buttons are put here programatically -->
             </LinearLayout>
 
             <!--Alarm müzik ve titreşim alanı-->
@@ -181,8 +232,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginEnd="16dp"
-                android:gravity="center_vertical"
-                android:visibility="gone">
+                android:gravity="center_vertical">
                 <!--Alarm müziği ayarlama alanı-->
                 <TextView
                     android:id="@+id/choose_ringtone"

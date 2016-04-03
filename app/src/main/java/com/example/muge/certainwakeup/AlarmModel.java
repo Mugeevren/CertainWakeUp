@@ -112,14 +112,16 @@ public class AlarmModel {
         setId(1);
         setHour(8);
         setMinute(0);
-        setFriday(true);
+        setIsActive(true);
+
         setMonday(true);
-        setIsActive(false);
-        setSaturday(true);
-        setThursday(true);
-        setWednesday(true);
         setTuesday(true);
+        setWednesday(true);
+        setThursday(true);
+        setFriday(true);
+        setSaturday(false);
         setSunday(false);
+
     }
 
     public AlarmModel(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
@@ -143,7 +145,7 @@ public class AlarmModel {
         else if(getHour()<10)
             return "0"+getHour()+" : "+getMinute();
         else if (getMinute()<10)
-            return getMinute()+" : 0"+getMinute();
+            return getHour()+" : 0"+getMinute();
         return getHour()+" : "+getMinute();
     }
 

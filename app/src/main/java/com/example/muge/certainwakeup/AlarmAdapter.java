@@ -35,13 +35,11 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     int minuteSet;
 
     private TimePickerDialog tpd;
-    private Button time;
+    private Button btnTime;
     private Switch onoff;
     private TextView alarmId;
-    private CheckBox repeat_onoff;
     private LinearLayout expand_area;
-    private LinearLayout repeat_days;
-    private ToggleButton expandActivate,monday,tuesday;
+    private ToggleButton expandActivate,mon,tue,wed,thu,fri,sat,sun;
     ImageButton btnDelete;
 
 
@@ -55,45 +53,93 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
         this.items=objects;
     }
 
+    public void identification(View view)
+    {
+
+    }
+
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
+    public View getView(final int position, final View convertView, final ViewGroup parent)
     {
         LayoutInflater inflater=(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view= inflater.inflate(resource, parent, false);
 
-        time= (Button) view.findViewById(R.id.btnAlarmTime);
+
+        //tanımlamalar
+        //identification(view);
+        btnTime= (Button) view.findViewById(R.id.btnAlarmTime);
         onoff=(Switch)view.findViewById(R.id.onoff);
         alarmId = (TextView)view.findViewById(R.id.alarmId);
-        repeat_onoff=(CheckBox)view.findViewById(R.id.repeat_onoff);//tekrarlanmasını isteyip istemediğimiz zaman devreye girer
         expand_area=(LinearLayout)view.findViewById(R.id.expand_area);//alarmın onoff true olması durumunda açılacak
-        repeat_days=(LinearLayout)view.findViewById(R.id.repeat_days);
         expandActivate = (ToggleButton)view.findViewById(R.id.toggleFrameActivate);
-        monday = (ToggleButton)view.findViewById(R.id.toggleMonday);
-        tuesday = (ToggleButton)view.findViewById(R.id.toggleTuesday);
+        mon = (ToggleButton)view.findViewById(R.id.toggleMonday);
+        tue = (ToggleButton)view.findViewById(R.id.toggleTuesday);
+        wed = (ToggleButton)view.findViewById(R.id.toggleWednesday);
+        thu = (ToggleButton)view.findViewById(R.id.toggleThursday);
+        fri = (ToggleButton)view.findViewById(R.id.toggleFriday);
+        sat = (ToggleButton)view.findViewById(R.id.toggleSaturday);
+        sun = (ToggleButton)view.findViewById(R.id.toggleSunday);
         btnDelete = (ImageButton)view.findViewById(R.id.delete);
 
-        time.setText(items.get(position).toString());
+        //alarmın özelliklerinin gösterimi
+        btnTime.setText(items.get(position).toString());
         onoff.setChecked(items.get(position).isActive());
         alarmId.setText(String.valueOf(items.get(position).getId()));
-
+        //repeat days handle
+        mon.setChecked(items.get(position).isMonday());
+        tue.setChecked(items.get(position).isTuesday());
+        wed.setChecked(items.get(position).isWednesday());
+        thu.setChecked(items.get(position).isThursday());
+        fri.setChecked(items.get(position).isFriday());
+        sat.setChecked(items.get(position).isSaturday());
+        sun.setChecked(items.get(position).isSunday());
 
         //Kurulu alarmın timePickerDialog ile saat güncellemesi
-        time.setOnClickListener(new View.OnClickListener() {
+        btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                timepickerHandle(position);
+                //timepickerHandle(position);
+                tpd = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                    @Override//istenilen alarm saati bilgileri buraya geliyor.
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        hourSet = hourOfDay;
+                        minuteSet=minute;
+                        items.get(position).setHour(hourSet);
+                        items.get(position).setMinute(minuteSet);
+                        updateAlarm(items.get(position));
+
+                        //getView(position,convertView,parent);
+                        //bir sonraki sıradakinin butonunun textini değiştiriyor nedenini bulamadım
+                        btnTime.setText(items.get(position).toString());
+                    }
+                }, items.get(position).getHour(),items.get(position).getMinute(), true);
+
+                tpd.setTitle("Saat Seçiniz");
+                tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, "Ayarla", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, "İptal", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        tpd.dismiss();
+                    }
+                });
+                tpd.show();
             }
         });
+
 
 
         //toggle button ile istenilen detaylı görüntü seçilebilir.
         expandActivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (expandActivate.isChecked()){
+                if (expandActivate.isChecked()) {
                     expand_area.setVisibility(View.VISIBLE);
-                }
-                else expand_area.setVisibility(View.INVISIBLE);
+                } else expand_area.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -112,17 +158,53 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
         });
 
 
-        //Alarmın tekrarlanıp tekrarlanmama durumunu günceller
-        repeat_onoff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    repeat_days.setVisibility(View.VISIBLE);
-                    repeatDaysHandle(position);
-                }
-                else{
-                    repeat_days.setVisibility(View.GONE);
-                }
+            public void onClick(View view) {
+                items.get(position).setMonday(mon.isChecked());
+                updateAlarm(items.get(position));
+            }
+        });
+        tue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.get(position).setTuesday(tue.isChecked());
+                updateAlarm(items.get(position));
+            }
+        });
+        wed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.get(position).setWednesday(wed.isChecked());
+                updateAlarm(items.get(position));
+            }
+        });
+        thu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.get(position).setThursday(thu.isChecked());
+                updateAlarm(items.get(position));
+            }
+        });
+        fri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.get(position).setFriday(fri.isChecked());
+                updateAlarm(items.get(position));
+            }
+        });
+        sat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.get(position).setSaturday(sat.isChecked());
+                updateAlarm(items.get(position));
+            }
+        });
+        sun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                items.get(position).setSunday(sun.isChecked());
+                updateAlarm(items.get(position));
             }
         });
 
@@ -131,27 +213,26 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     }
 
 
-    ///////***eksik- düzenleme günlerin tekrarı
     private void repeatDaysHandle(int position)
     {
-        if(items.get(position).isMonday())
-        {
-            monday.setChecked(true);
-        }
-        if(items.get(position).isTuesday())
-        {
-            tuesday.setChecked(true);
-        }
-        //devamı
+
     }
 
     private void timepickerHandle(final int position) {
+
 
         tpd = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
             @Override//istenilen alarm saati bilgileri buraya geliyor.
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 hourSet = hourOfDay;
-                minuteSet = minute;
+                minuteSet=minute;
+                items.get(position).setHour(hourSet);
+                items.get(position).setMinute(minuteSet);
+                updateAlarm(items.get(position));
+
+                //getView(position,convertView,parent);
+                //bir sonraki sıradakinin butonunun textini değiştiriyor nedenini bulamadım
+                //btnTime.setText(items.get(position).toString());
             }
         }, items.get(position).getHour(),items.get(position).getMinute(), true);
 
@@ -159,10 +240,7 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
         tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, "Ayarla", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                items.get(position).setHour(hourSet);
-                items.get(position).setMinute(minuteSet);
-                updateAlarm(items.get(position));
-                time.setText(items.get(position).toString());
+
             }
         });
         tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, "İptal", new DialogInterface.OnClickListener() {
