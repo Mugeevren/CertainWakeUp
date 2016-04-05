@@ -1,7 +1,9 @@
 package com.example.muge.certainwakeup;
 
+import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,13 +18,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AlarmAdapter.CustomButtonListener {
 
         private ArrayList<AlarmModel> alarms=new ArrayList<AlarmModel>();
         private ListView alarmList;
         private ImageButton addAlarm;
         //private MySharedPreferences sp;
         private AlarmDbHelper alarmdb = new AlarmDbHelper(MainActivity.this);
+        TimePickerDialog tpd;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
             //adaptor işlemleri
             alarmList=(ListView)findViewById(R.id.alarmList);
             AlarmAdapter adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
+            adapter.setDeleteButtonClickListener(MainActivity.this);
+            adapter.setTimeSetButtonClickListener(MainActivity.this);
+            adapter.setExpandToggleButtonClickListener(MainActivity.this);
             alarmList.setAdapter(adapter);
 
 
@@ -93,9 +99,9 @@ public class MainActivity extends AppCompatActivity {
     private void insertDefaultAlarm(AlarmModel alarm)
     {
         alarmdb=new AlarmDbHelper(MainActivity.this);
-        boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(),alarm.getHour(),alarm.getMinute()
-                ,alarm.isMonday(),alarm.isTuesday(),alarm.isWednesday(),alarm.isThursday(),alarm.isFriday(),
-                alarm.isSaturday(),alarm.isSunday(),alarm.isActive());
+        boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
+                , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
+                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
 
     }
 
@@ -122,6 +128,63 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void updateAlarm(AlarmModel alarm)
+    {
+        AlarmDbHelper alarmdb=new AlarmDbHelper(this);
+        boolean result=alarmdb.UpdateAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
+                , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
+                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
+        if(result==false)
+            Toast.makeText(this,"Güncelleme Ekleme Başarısız",Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    @Override
+    public void onDeleteButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
+
+
+    }
+
+    @Override
+    public void onTimeSetButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
+
+        //timepickerHandle(position);
+        tpd = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override//istenilen alarm saati bilgileri buraya geliyor.
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                alarm.setHour(hourOfDay);
+                alarm.setMinute(minute);
+                updateAlarm(alarm);
+                vh.btnTime.setText(alarm.toString());
+                //bir sonraki sıradakinin butonunun textini değiştiriyor nedenini bulamadım
+
+            }
+        }, alarm.getHour(), alarm.getMinute(), true);
+
+        tpd.setTitle("Saat Seçiniz");
+        tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, "Ayarla", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, "İptal", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                tpd.dismiss();
+            }
+        });
+        tpd.show();
+
+    }
+
+    @Override
+    public void onExpandToggleButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
+        if (vh.expandActivate.isChecked()) {
+            vh.expand_area.setVisibility(View.VISIBLE);
+        } else vh.expand_area.setVisibility(View.INVISIBLE);
+    }
 }
 
 
