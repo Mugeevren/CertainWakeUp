@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         private ListView alarmList;
         private ImageButton addAlarm;
         //private MySharedPreferences sp;
-    int ab;
+    int ab=0;
         private AlarmDbHelper alarmdb = new AlarmDbHelper(MainActivity.this);
         TimePickerDialog tpd;
 

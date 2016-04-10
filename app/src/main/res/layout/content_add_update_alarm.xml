@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/deep_orange_800"
+    tools:context="com.example.muge.certainwakeup.AddUpdateAlarmActivity"
+    tools:showIn="@layout/activity_add_update_alarm">
+
+
+
+    <TimePicker
+        android:id="@+id/timepicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"></TimePicker>
+
+    <LinearLayout
+        android:id="@+id/repeat_days2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timepicker"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        >
+
+        <ToggleButton
+            android:id="@+id/toggleMonday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Mon"
+            android:textOff="Mon"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/blackish_trans"/>
+        <ToggleButton
+            android:id="@+id/toggleTuesday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackish_trans"
+            android:textOn="Tue"
+            android:textOff="Tue"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            />
+        <ToggleButton
+            android:id="@+id/toggleWednesday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackish_trans"
+            android:textOn="Wed"
+            android:textOff="Wed"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+        <ToggleButton
+            android:id="@+id/toggleThursday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textOn="Thu"
+            android:textOff="Thu"
+            android:textColor="@color/blackish_trans"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+        <ToggleButton
+            android:id="@+id/toggleFriday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackish_trans"
+            android:textOn="Fri"
+            android:textOff="Fri"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            />
+        <ToggleButton
+            android:id="@+id/toggleSaturday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackish_trans"
+            android:textOn="Sat"
+            android:textOff="Sat"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+        <ToggleButton
+            android:id="@+id/toggleSunday2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blackish_trans"
+            android:textOn="Sun"
+            android:textOff="Sun"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+    <!--Alarm müzik ve titreşim alanı-->
+    <RelativeLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/muzik"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/repeat_days2"
+        >
+        <!--Alarm müziği ayarlama alanı-->
+        <TextView
+            android:id="@+id/choose_ringtone2"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:textColor="@color/clock_white"
+            android:layout_toLeftOf="@+id/vibrate_onoff"
+            android:text="Müzik Sesi"
+            android:textSize="20dp"
+            />
+        <!--Alarm titreşim seçimi-->
+        <CheckBox
+            android:id="@+id/vibrate_onoff2"
+            android:text="@string/alarm_vibrate"
+            android:textColor="@color/clock_gray"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="20dp"
+            />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/clock_gray"
+        android:layout_below="@+id/muzik"
+        android:text="@string/Alarm_Kaydet"
+        android:textColor="@color/blackish_trans"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"/>
+</RelativeLayout>
