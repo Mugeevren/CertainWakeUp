@@ -141,9 +141,11 @@
     <!-- Empty space at the edges of the delete button icons. Based off of 56dip width, only nonzero for tablets. -->
     <dimen name="delete_button_padding">0dip</dimen>
     <!-- Empty space at the edges of the lap button icon. Based off of 56dip width, only nonzero for tablets.-->
-    <dimen name="lap_button_padding">0dip</dimen> <!-- 11 -->
+    <dimen name="lap_button_padding">0dip</dimen>
+    <!-- 11 -->
     <!-- Empty space at the edges of the delete button icons. Based off of 56dip width, only nonzero for tablets. -->
-    <dimen name="share_button_padding">0dip</dimen> <!-- 16 -->
+    <dimen name="share_button_padding">0dip</dimen>
+    <!-- 16 -->
     <!-- Extra offset for timer button paddings. Only nonzero for non-tablets. -->
     <dimen name="timer_button_extra_offset">14dip</dimen>
 

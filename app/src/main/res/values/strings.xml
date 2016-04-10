@@ -103,27 +103,28 @@
          5: days       minutes
          6:      hours minutes
          7: days hours minutes
-    --><skip />
+    -->
+    <skip />
 
     <!-- Timer notification: how long from now until timer goes off. -->
     <string-array name="timer_notifications">
         <item>Less than a minute remaining</item>
-        <item><xliff:g id="HOURS" example="2 hours">%1$s</xliff:g> remaining</item>
-        <item><xliff:g id="MINUTES" example="2 minutes">%2$s</xliff:g> remaining</item>
-        <item><xliff:g id="HOURS" example="2 hours">%1$s</xliff:g> <xliff:g id="MINUTES" example="2 minutes">%2$s</xliff:g> remaining</item>
+        <item><xliff:g example="2 hours" id="HOURS">%1$s</xliff:g> remaining</item>
+        <item><xliff:g example="2 minutes" id="MINUTES">%2$s</xliff:g> remaining</item>
+        <item><xliff:g example="2 hours" id="HOURS">%1$s</xliff:g> <xliff:g example="2 minutes" id="MINUTES">%2$s</xliff:g> remaining</item>
     </string-array>
 
     <!-- Alarm confirmation toast: Describes how long from now until
          alarm fires -->
     <string-array name="alarm_set">
         <item>Alarm set for less than 1 minute from now.</item>
-        <item>Alarm set for <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> from now.</item>
-        <item>Alarm set for <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> from now.</item>
-        <item>Alarm set for <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> and <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> from now.</item>
-        <item>Alarm set for <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> from now.</item>
-        <item>Alarm set for <xliff:g id="DAYS" example="2 days">%1$s</xliff:g> and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> from now.</item>
-        <item>Alarm set for <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g> and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> from now.</item>
-        <item>Alarm set for <xliff:g id="DAYS" example="2 days">%1$s</xliff:g>, <xliff:g id="HOURS" example="2 hours">%2$s</xliff:g>, and <xliff:g id="MINUTES" example="2 minutes">%3$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 days" id="DAYS">%1$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 hours" id="HOURS">%2$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 days" id="DAYS">%1$s</xliff:g> and <xliff:g example="2 hours" id="HOURS">%2$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 minutes" id="MINUTES">%3$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 days" id="DAYS">%1$s</xliff:g> and <xliff:g example="2 minutes" id="MINUTES">%3$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 hours" id="HOURS">%2$s</xliff:g> and <xliff:g example="2 minutes" id="MINUTES">%3$s</xliff:g> from now.</item>
+        <item>Alarm set for <xliff:g example="2 days" id="DAYS">%1$s</xliff:g>, <xliff:g example="2 hours" id="HOURS">%2$s</xliff:g>, and <xliff:g example="2 minutes" id="MINUTES">%3$s</xliff:g> from now.</item>
     </string-array>
 
     <!-- Alarm confirmation toast: singular day -->
@@ -180,7 +181,7 @@
         <!-- Duration for one minute -->
         <item quantity="one">1 minute</item>
         <!-- Duration for more than one minute -->
-        <item quantity="other"><xliff:g id="number" example="7">%d</xliff:g> minutes</item>
+        <item quantity="other"><xliff:g example="7" id="number">%d</xliff:g> minutes</item>
     </plurals>
 
     <plurals name="snooze_picker_label">
@@ -220,7 +221,8 @@
         <item>10</item>
         <item>15</item>
         <item>30</item>
-        <item>-1</item> <!-- Off -->
+        <item>-1</item>
+        <!-- Off -->
     </string-array>
 
     <!-- Done button when editing an alarm. -->
@@ -271,7 +273,8 @@
     <!-- Title of the ringtone setting. -->
     <string name="default_ringtone_setting_title">Set default ringtone</string>
 
-    <!-- Accessibility labels for Clock activity buttons --><skip/>
+    <!-- Accessibility labels for Clock activity buttons -->
+    <skip />
     <string name="alarm_button_description">Alarms</string>
     <string name="gallery_button_description">Gallery</string>
     <string name="music_button_description">Music</string>
@@ -423,19 +426,19 @@
         <!-- 1 hour -->
         <item quantity="one">1 hour</item>
         <!-- more -->
-        <item quantity="other"><xliff:g id="number" example="7">%d</xliff:g> hours</item>
+        <item quantity="other"><xliff:g example="7" id="number">%d</xliff:g> hours</item>
     </plurals>
     <plurals name="Nminutes_description">
         <!-- 1 minute -->
         <item quantity="one">1 minute</item>
         <!-- more -->
-        <item quantity="other"><xliff:g id="number" example="7">%d</xliff:g> minutes</item>
+        <item quantity="other"><xliff:g example="7" id="number">%d</xliff:g> minutes</item>
     </plurals>
     <plurals name="Nseconds_description">
         <!-- 1 second -->
         <item quantity="one">1 second</item>
         <!-- more -->
-        <item quantity="other"><xliff:g id="number" example="7">%d</xliff:g> seconds</item>
+        <item quantity="other"><xliff:g example="7" id="number">%d</xliff:g> seconds</item>
     </plurals>
 
     <!-- timer strings -->
@@ -480,7 +483,7 @@
         <!-- 1 timer -->
         <item quantity="one">1 minute</item>
         <!-- more -->
-        <item quantity="other"><xliff:g id="number" example="7">%d</xliff:g> timers</item>
+        <item quantity="other"><xliff:g example="7" id="number">%d</xliff:g> timers</item>
     </plurals>
 
     <!-- Title with the clock on the main page displaying the user's regular timezone (shows when automatic_home_clock enabled) -->
@@ -730,13 +733,13 @@
     <!-- Notification title when timer is stopped. -->
     <string name="timer_stopped">Timer stopped</string>
     <!-- Notification title when multiple timers are stopped. -->
-    <string name="timers_stopped"><xliff:g id="number" example="7">%d</xliff:g> timers stopped</string>
+    <string name="timers_stopped"><xliff:g example="7" id="number">%d</xliff:g> timers stopped</string>
     <!-- Notification text when multiple timers are stopped. -->
     <string name="all_timers_stopped_notif">Touch to see your timers</string>
     <!-- Notification title when at least one timer, of those in use, is counting down. -->
-    <string name="timers_in_use"><xliff:g id="number" example="7">%d</xliff:g> timers</string>
+    <string name="timers_in_use"><xliff:g example="7" id="number">%d</xliff:g> timers</string>
     <!-- Notification text when at least one timer, of those in use, is counting down. -->
-    <string name="next_timer_notif">Next timer: <xliff:g id="time_remaining" example="2 minutes remaining">%s</xliff:g></string>
+    <string name="next_timer_notif">Next timer: <xliff:g example="2 minutes remaining" id="time_remaining">%s</xliff:g></string>
 
     <!-- screensaver settings strings -->
     <!-- Label for the screen saver activity displayed on-screen when that activity must be represented to the user. -->
@@ -760,7 +763,7 @@
     <!-- slash between date and next alarm in the clock -->
     <string name="world_day_of_week_label"> / <xliff:g id="label">%s</xliff:g></string>
     <!-- Description of field showing the next alarm time in the clock page, for accessibility. -->
-    <string name="next_alarm_description">Next alarm: <xliff:g id="alarm_time" example="Wed 8:00am">%s</xliff:g></string>
+    <string name="next_alarm_description">Next alarm: <xliff:g example="Wed 8:00am" id="alarm_time">%s</xliff:g></string>
     <string name="label_unlabeled"></string>
 
     <!-- Displays the number of alarms selected from the list of alarms. -->
@@ -790,13 +793,13 @@
     <string name="clock_24_hours_format" translatable="false">kk&#58;mm</string>
     <string name="main_widget_12_hours_format" translatable="false">h&#58;mm</string>
     <!-- Font size for AM/PM should match widget_label_font_size -->
-    <string name="wc_widget_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="14" face="sans-serif-condensed">a</font></b></string>
+    <string name="wc_widget_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font face="sans-serif-condensed" size="14">a</font></b></string>
     <!-- Font size for AM/PM should match bottom_text_size -->
-    <string name="main_clock_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="16" face="sans-serif-condensed">a</font></b></string>
+    <string name="main_clock_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font face="sans-serif-condensed" size="16">a</font></b></string>
     <!-- Font size for AM/PM should match label_font_size -->
-    <string name="world_clock_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="14" face="sans-serif-condensed">a</font></b></string>
+    <string name="world_clock_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font face="sans-serif-condensed" size="14">a</font></b></string>
     <!-- Font size for AM/PM should match alarm_label_size -->
-    <string name="alarm_time_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font size="14" face="sans-serif-condensed">a</font></b></string>
+    <string name="alarm_time_12_hours_format" translatable="false">h&#58;mm&#8202;<b><font face="sans-serif-condensed" size="14">a</font></b></string>
 
     <!-- String for no alarms -->
     <string name="no_alarms">No Alarms</string>
@@ -831,5 +834,8 @@
     <string name="lightuppi_no_server_ID">Alarm does not have a LightUpPi ID</string>
     <string name="lightuppi_delete_successful">LightUpPi Alarm successfully deleted</string>
     <string name="lightuppi_delete_unsuccessful">LightUpPi Alarm delete UNSUCCESSFUL</string>
+    <string name="title_activity_add_update_alarm">AddUpdateAlarmActivity</string>
+
+    <string name="Alarm_Kaydet">Kaydet</string>
 
 </resources>

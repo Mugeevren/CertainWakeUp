@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,7 +16,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AlarmAdapter.CustomButtonListener {
@@ -42,28 +45,15 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             addAlarm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //yani aktivity'e yönlendirme için intent
-
-
+                    //Ekleme yapılaak activitynin baslatılamsı
+                    Intent intent=new Intent(MainActivity.this,AddUpdateAlarmActivity.class);
+                    intent.putExtra("ButonAdi",false);
+                    startActivity(intent);
                 }
             });
 
 
-            alarmdb.deleteAll();
-            AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
-            insertDefaultAlarm(alarm1);
-            AlarmModel alarm2 = new AlarmModel(3,11,30,true,false,false,false,false,false,false,true);
-            AlarmModel alarm=new AlarmModel();
-            insertDefaultAlarm(alarm);
-            insertDefaultAlarm(alarm2);
-            AlarmModel alarm3 = new AlarmModel(4,21,30,true,false,false,false,false,false,false,true);
-            AlarmModel alarm4=new AlarmModel(5,22,30,true,true,false,false,false,false,false,true);
-            insertDefaultAlarm(alarm3);
-            insertDefaultAlarm(alarm4);
-            AlarmModel alarm5 = new AlarmModel(6,23,30,true,false,false,false,false,false,false,true);
-            AlarmModel alarm6=new AlarmModel(7,00,30,true,true,false,false,false,false,false,true);
-            insertDefaultAlarm(alarm5);
-            insertDefaultAlarm(alarm6);
+
 
             /*
             alarmdb.deleteAll();
@@ -72,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             insertDefaultAlarm(alarm);
             insertDefaultAlarm(alarm1);
             */
+           //alarmdb.deleteAll();
 
             getAlarms();//sql lite ile kayıtlı attached alarmları alarms listesine atar
 
@@ -111,22 +102,6 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         alarmdb.GetAttachedAlarm(alarms);
     }
 
-    private void UpdateDummyData(AlarmModel alarm)
-    {
-        alarmdb=new AlarmDbHelper(MainActivity.this);
-        boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
-                , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
-                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
-        if(result==true)
-        {
-            Toast.makeText(MainActivity.this, "Güncelleme başarıyla eklendi.", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(MainActivity.this,"Güncelleme Ekleme Başarısız",Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     private void updateAlarm(AlarmModel alarm)
     {
@@ -185,6 +160,27 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             vh.expand_area.setVisibility(View.VISIBLE);
         } else vh.expand_area.setVisibility(View.INVISIBLE);
     }
+
+
+
+   public void alarmEkle()
+   {
+       alarmdb.deleteAll();
+       AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
+       insertDefaultAlarm(alarm1);
+       AlarmModel alarm2 = new AlarmModel(3,11,30,true,false,false,false,false,false,false,true);
+       AlarmModel alarm=new AlarmModel();
+       insertDefaultAlarm(alarm);
+       insertDefaultAlarm(alarm2);
+       AlarmModel alarm3 = new AlarmModel(4,21,30,true,false,false,false,false,false,false,true);
+       AlarmModel alarm4=new AlarmModel(5,22,30,true,true,false,false,false,false,false,true);
+       insertDefaultAlarm(alarm3);
+       insertDefaultAlarm(alarm4);
+       AlarmModel alarm5 = new AlarmModel(6,23,30,true,false,false,false,false,false,false,true);
+       AlarmModel alarm6=new AlarmModel(7,00,30,true,true,false,false,false,false,false,true);
+       insertDefaultAlarm(alarm5);
+       insertDefaultAlarm(alarm6);
+   }
 }
 
 

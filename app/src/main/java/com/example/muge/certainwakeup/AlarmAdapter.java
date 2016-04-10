@@ -3,6 +3,7 @@ package com.example.muge.certainwakeup;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,7 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
         public void onDeleteButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
         public void onTimeSetButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
         public void onExpandToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+
     }
 
     public void setDeleteButtonClickListener(CustomButtonListener listener) {
@@ -52,9 +54,12 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     public void setExpandToggleButtonClickListener(CustomButtonListener listener){
         this.customListener = listener;
     }
+
+
     //switch on-off ve haftanın günleri için de on ve set click listenerlar yapılacak
 
     public class ViewHolder {
+        LinearLayout area;
         Button btnTime;
         Switch onoff;
         TextView alarmId;
@@ -96,6 +101,7 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
             viewHolder.sat = (ToggleButton)convertView.findViewById(R.id.toggleSaturday);
             viewHolder.sun = (ToggleButton)convertView.findViewById(R.id.toggleSunday);
             viewHolder.btnDelete = (ImageButton)convertView.findViewById(R.id.delete);
+            viewHolder.area=(LinearLayout)convertView.findViewById(R.id.area);
 
             convertView.setTag(viewHolder);
         }
@@ -164,6 +170,17 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
                 else
                     alarm.setIsActive(false);
                 updateAlarm(alarm);
+            }
+        });
+
+        viewHolder.area.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent=new Intent(context,AddUpdateAlarmActivity.class);
+                intent.putExtra("Islem", true);
+                intent.putExtra("alarmId", alarm.getId());
+                context.startActivity(intent);
+                return false;
             }
         });
 

@@ -65,7 +65,7 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
     public void GetAttachedAlarm(ArrayList<AlarmModel> alarms)
     {
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT * FROM AttachedAlarm",null);
+        Cursor cursor=db.rawQuery("SELECT * FROM AttachedAlarm", null);
         cursor.moveToFirst();
         for (int i=0;i<cursor.getCount();i++)
         {
@@ -77,6 +77,19 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
             alarms.add(alarm);
             cursor.moveToNext();
         }
+    }
+    public AlarmModel getAlarm(int id)
+    {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * FROM AttachedAlarm WHERE id="+String.valueOf(id), null);
+        cursor.moveToFirst();
+        AlarmModel alarm=new AlarmModel(
+                cursor.getInt(0),cursor.getInt(1),cursor.getInt(2),
+                (cursor.getInt(3)!=0),(cursor.getInt(4)!=0),(cursor.getInt(5)!=0),
+                (cursor.getInt(6)!=0),(cursor.getInt(7)!=0),(cursor.getInt(8)!=0),
+                (cursor.getInt(9)!=0),(cursor.getInt(10)!=0));
+        return alarm;
+
     }
 
     //İstenilen attached alarm Güncellemsi yapar.
