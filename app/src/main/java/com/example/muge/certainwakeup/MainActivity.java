@@ -1,7 +1,9 @@
 package com.example.muge.certainwakeup;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.ExpandableListActivity;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import android.widget.ToggleButton;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
 
 public class MainActivity extends AppCompatActivity implements AlarmAdapter.CustomButtonListener {
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             //sp = new MySharedPreferences(MainActivity.this);
             //sp.editor.putInt("alarmId",-1);
             //sp.editor.commit();
+            AlarmCall();
 
             addAlarm = (ImageButton)findViewById(R.id.addAlarm);
             addAlarm.setOnClickListener(new View.OnClickListener() {
@@ -182,6 +186,14 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
        insertDefaultAlarm(alarm5);
        insertDefaultAlarm(alarm6);
    }
+
+    public void AlarmCall()
+    {
+        Intent intent=new Intent(MainActivity.this, MyBroadcastReceiver.class);
+        PendingIntent pi=PendingIntent.getBroadcast(MainActivity.this,12,intent,0);
+        AlarmManager am=(AlarmManager)MainActivity.this.getSystemService(ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+(10*1000),pi);
+    }
 }
 
 
