@@ -84,6 +84,7 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
 
     public void init() {
         timePicker = (TimePicker) findViewById(R.id.timepicker);
+        timePicker.setIs24HourView(true);
         mon = (ToggleButton) findViewById(R.id.toggleMonday2);
         tue = (ToggleButton) findViewById(R.id.toggleTuesday2);
         wed = (ToggleButton) findViewById(R.id.toggleWednesday2);

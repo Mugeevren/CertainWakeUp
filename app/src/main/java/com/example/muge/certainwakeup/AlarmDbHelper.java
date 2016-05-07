@@ -18,7 +18,7 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
 
     public AlarmDbHelper(Context context)
     {
-        super(context,DB_NAME,null,DB_VERSİON);
+        super(context, DB_NAME, null, DB_VERSİON);
     }
 
     @Override
@@ -67,9 +67,10 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=db.rawQuery("SELECT * FROM AttachedAlarm", null);
         cursor.moveToFirst();
+        AlarmModel alarm;
         for (int i=0;i<cursor.getCount();i++)
         {
-            AlarmModel alarm=new AlarmModel(
+            alarm=new AlarmModel(
                     cursor.getInt(0),cursor.getInt(1),cursor.getInt(2),
                     (cursor.getInt(3)!=0),(cursor.getInt(4)!=0),(cursor.getInt(5)!=0),
                     (cursor.getInt(6)!=0),(cursor.getInt(7)!=0),(cursor.getInt(8)!=0),

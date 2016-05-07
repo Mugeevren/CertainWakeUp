@@ -60,13 +60,15 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
 
 
 
+
+
             /*
             alarmdb.deleteAll();
             AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
             AlarmModel alarm=new AlarmModel();
             insertDefaultAlarm(alarm);
             insertDefaultAlarm(alarm1);
-            */
+*/
            //alarmdb.deleteAll();
 
             getAlarms();//sql lite ile kayıtlı attached alarmları alarms listesine atar
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
     public void onTimeSetButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
 
         //timepickerHandle(position);
-        tpd = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+        tpd = new TimePickerDialog(this,TimePickerDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override//istenilen alarm saati bilgileri buraya geliyor.
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 alarm.setHour(hourOfDay);
