@@ -838,4 +838,8 @@
 
     <string name="Alarm_Kaydet">Kaydet</string>
 
+    <string name="title_activity_end_alarm_math_equation">EndAlarmMathEquationActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY CONTENT</string>
+
 </resources>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@color/deep_orange_800">
+    <Space android:layout_height="40dp"
+        android:layout_width="match_parent">
+
+    </Space>
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_menu_alarms"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textClock"
+        android:layout_gravity="center_horizontal"
+        android:text="00:00"
+        android:textColor="@color/clock_white"
+        android:textSize="60dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+        <ImageView
+            android:id="@+id/imgLabel"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_label_small"
+            />
+        <TextView
+            android:id="@+id/txtLabelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alarm Example"
+            android:textSize="17dp"
+            android:textColor="#ffffee"
+            android:layout_toRightOf="@id/imgLabel"
+            android:paddingTop="15dp"/>
+        <Button
+            android:id="@+id/btnStopAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Kapat"
+            android:layout_above="@id/space"
+            android:background="@color/deep_orange_600"
+            android:shadowColor="@color/clock_white"
+            android:textColor="@color/clock_white"
+            android:textSize="20dp"/>
+
+        <Space android:layout_height="20dp"
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true" >
+
+        </Space>
+        <Button
+            android:id="@+id/btnSnoozeAlarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ertele"
+            android:layout_below="@id/space"
+            android:background="@color/deep_orange_600"
+            android:shadowColor="@color/clock_white"
+            android:textColor="@color/clock_white"
+            android:textSize="15dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

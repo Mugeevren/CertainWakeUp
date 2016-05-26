@@ -17,7 +17,28 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/deep_orange_800"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+            <LinearLayout
+                android:id="@+id/back_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/deep_orange_800"
+                    android:textSize="19dp"
+                    android:text="Geri"
+                    android:textColor="@color/clock_white"
+                    android:layout_gravity="center|start"
+                    />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 

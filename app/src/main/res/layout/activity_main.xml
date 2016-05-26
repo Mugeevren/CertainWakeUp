@@ -26,6 +26,13 @@
                 android:background="@color/deep_orange_800"
                 android:paddingLeft="30dp"
                 />
+            <Button
+                android:id="@+id/btnDeneme"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@color/deep_orange_800"
+                android:text="deneme"
+                ></Button>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

@@ -3,8 +3,11 @@ package com.example.muge.certainwakeup;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -34,12 +37,11 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
     }
 
     //Yeni alarm ekleme işlemleri
-    public boolean InsertAttachedAlarm(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
+    public boolean InsertAttachedAlarm(int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
     {
         SQLiteDatabase db=getWritableDatabase();
 
         ContentValues newRow=new ContentValues();
-        newRow.put("id",id);
         newRow.put("hour",hour);
         newRow.put("minute",minute);
         newRow.put("monday",mon);
@@ -55,6 +57,16 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public void deleteAlarm(int id)
+    {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete("AttachedAlarm", " id = "+id, null);
+        } catch (SQLException e) {
+            Log.e("SQLite Error : ","Silinemedi!");
+        }
+    }
+
     public void deleteAll()
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -67,6 +79,7 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db=this.getReadableDatabase();
         Cursor cursor=db.rawQuery("SELECT * FROM AttachedAlarm", null);
         cursor.moveToFirst();
+        alarms.clear();
         AlarmModel alarm;
         for (int i=0;i<cursor.getCount();i++)
         {
@@ -98,7 +111,6 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db=getWritableDatabase();
         ContentValues newRow=new ContentValues();
-        newRow.put("id",id);
         newRow.put("hour",hour);
         newRow.put("minute",minute);
         newRow.put("monday",mon);

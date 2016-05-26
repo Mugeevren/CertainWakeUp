@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -29,8 +30,11 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         private ArrayList<AlarmModel> alarms=new ArrayList<AlarmModel>();
         private ListView alarmList;
         private ImageButton addAlarm;
+        private AlarmAdapter adapter;
+        private Button deneme;
+
         //private MySharedPreferences sp;
-    int ab=0;
+        int ab=0;
         private AlarmDbHelper alarmdb = new AlarmDbHelper(MainActivity.this);
         TimePickerDialog tpd;
 
@@ -44,13 +48,26 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             //sp = new MySharedPreferences(MainActivity.this);
             //sp.editor.putInt("alarmId",-1);
             //sp.editor.commit();
-            AlarmCall();
+
+            //AlarmCall();
+
+            alarmdb=new AlarmDbHelper(MainActivity.this);
+
+            deneme = (Button)findViewById(R.id.btnDeneme);
+            deneme.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(MainActivity.this,EndAlarmMathEquationActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             addAlarm = (ImageButton)findViewById(R.id.addAlarm);
             addAlarm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //Ekleme yapılaak activitynin baslatılamsı
+
                     Intent intent=new Intent(MainActivity.this,AddUpdateAlarmActivity.class);
                     intent.putExtra("ButonAdi",false);
                     startActivity(intent);
@@ -58,11 +75,19 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             });
 
 
-
-
-
-
+            //// TODO: 7.5.2016 alarmlistesinin bir elemanına tıklandığında updatealarm ekranına yönlendirme 
             /*
+            alarmList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(MainActivity.this, "teufchdanjlfc", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+*/
+
+
+/*
             alarmdb.deleteAll();
             AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
             AlarmModel alarm=new AlarmModel();
@@ -71,15 +96,11 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
 */
            //alarmdb.deleteAll();
 
-            getAlarms();//sql lite ile kayıtlı attached alarmları alarms listesine atar
+            alarmdb.GetAttachedAlarm(alarms);//sql lite ile kayıtlı attached alarmları alarms listesine atar
 
             //adaptor işlemleri
             alarmList=(ListView)findViewById(R.id.alarmList);
-            AlarmAdapter adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
-            adapter.setDeleteButtonClickListener(MainActivity.this);
-            adapter.setTimeSetButtonClickListener(MainActivity.this);
-            adapter.setExpandToggleButtonClickListener(MainActivity.this);
-            alarmList.setAdapter(adapter);
+            refreshAdapter();
 
 
 
@@ -94,20 +115,31 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
 
         }
 
+    private void refreshAdapter()
+    {
+        adapter=new AlarmAdapter(MainActivity.this,R.layout.alarm_row,alarms);
+        adapter.setDeleteButtonClickListener(MainActivity.this);
+        adapter.setTimeSetButtonClickListener(MainActivity.this);
+        adapter.setExpandToggleButtonClickListener(MainActivity.this);
+        adapter.setMondayToggleButtonListener(MainActivity.this);
+        adapter.setTuesdayToggleButtonListener(MainActivity.this);
+        adapter.setWednesdayToggleButtonListener(MainActivity.this);
+        adapter.setThursdayToggleButtonListener(MainActivity.this);
+        adapter.setFridayToggleButtonListener(MainActivity.this);
+        adapter.setSaturdayToggleButtonListener(MainActivity.this);
+        adapter.setSundayToggleButtonListener(MainActivity.this);
+        alarmList.setAdapter(adapter);
+    }
+
     private void insertDefaultAlarm(AlarmModel alarm)
     {
         alarmdb=new AlarmDbHelper(MainActivity.this);
-        boolean result=alarmdb.InsertAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
+        boolean result=alarmdb.InsertAttachedAlarm(alarm.getHour(), alarm.getMinute()
                 , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
                 alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
-
     }
 
-    private void getAlarms()
-    {
-        alarmdb=new AlarmDbHelper(MainActivity.this);
-        alarmdb.GetAttachedAlarm(alarms);
-    }
+
 
 
     private void updateAlarm(AlarmModel alarm)
@@ -121,11 +153,69 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
     }
 
 
+    
+
+    @Override
+    public void onMondayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+        
+        alarm.setMonday(vh.mon.isChecked());
+        updateAlarm(alarm);
+    }
+    @Override
+    public void onTuesdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+
+        alarm.setTuesday(vh.tue.isChecked());
+        updateAlarm(alarm);
+    }
+
+    @Override
+    public void onWednesdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+
+        alarm.setWednesday(vh.tue.isChecked());
+        updateAlarm(alarm);
+    }
+    
+    @Override
+    public void onThursdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+
+        alarm.setThursday(vh.tue.isChecked());
+        updateAlarm(alarm);
+    }
+
+    @Override
+    public void onFridayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+
+        alarm.setFriday(vh.tue.isChecked());
+        updateAlarm(alarm);
+    }
+    
+    @Override
+    public void onSaturdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+
+        alarm.setSaturday(vh.tue.isChecked());
+        updateAlarm(alarm);
+    }
+
+    @Override
+    public void onSundayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+
+        alarm.setSunday(vh.tue.isChecked());
+        updateAlarm(alarm);
+    }
+
+    @Override
+    public void onOnOffSwitchClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+        alarm.setIsActive(vh.onoff.isActivated());
+        updateAlarm(alarm);
+    }
+
 
     @Override
     public void onDeleteButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
 
-
+        alarmdb.deleteAlarm(alarm.getId());
+        alarmdb.GetAttachedAlarm(alarms);
+        refreshAdapter();
     }
 
     @Override
@@ -165,30 +255,14 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
     public void onExpandToggleButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
         if (vh.expandActivate.isChecked()) {
             vh.expand_area.setVisibility(View.VISIBLE);
-        } else vh.expand_area.setVisibility(View.INVISIBLE);
+        } else {
+            vh.expand_area.setVisibility(View.INVISIBLE);
+            alarmList.setAdapter(adapter);
+        }
     }
 
 
-
-   public void alarmEkle()
-   {
-       alarmdb.deleteAll();
-       AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
-       insertDefaultAlarm(alarm1);
-       AlarmModel alarm2 = new AlarmModel(3,11,30,true,false,false,false,false,false,false,true);
-       AlarmModel alarm=new AlarmModel();
-       insertDefaultAlarm(alarm);
-       insertDefaultAlarm(alarm2);
-       AlarmModel alarm3 = new AlarmModel(4,21,30,true,false,false,false,false,false,false,true);
-       AlarmModel alarm4=new AlarmModel(5,22,30,true,true,false,false,false,false,false,true);
-       insertDefaultAlarm(alarm3);
-       insertDefaultAlarm(alarm4);
-       AlarmModel alarm5 = new AlarmModel(6,23,30,true,false,false,false,false,false,false,true);
-       AlarmModel alarm6=new AlarmModel(7,00,30,true,true,false,false,false,false,false,true);
-       insertDefaultAlarm(alarm5);
-       insertDefaultAlarm(alarm6);
-   }
-
+/*
     public void AlarmCall()
     {
         Intent intent=new Intent(MainActivity.this, MyBroadcastReceiver.class);
@@ -196,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         AlarmManager am=(AlarmManager)MainActivity.this.getSystemService(ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+(10*1000),pi);
     }
+    */
 }
 
 

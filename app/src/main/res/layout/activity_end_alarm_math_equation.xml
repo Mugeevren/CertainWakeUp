@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="60dp"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center_horizontal"
+    android:background="@color/deep_orange_800"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:id="@+id/layoutKalan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/chronometer">
+        <TextView
+            android:id="@+id/kalanText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kalan Süre :     "
+            android:textColor="@color/clock_white"/>
+    </LinearLayout>
+
+    <Chronometer
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/chronometer"
+        android:layout_weight="0.03"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/clock_white"
+        android:textColorHighlight="@color/deep_orange_500"
+        android:textStyle="bold|italic"
+        android:textSize="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/layoutQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingBottom="40dp">
+        <TextView
+            android:paddingLeft="40dp"
+            android:id="@+id/equation_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/dummy_content"
+            android:textColor="@color/clock_white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/answer"
+            android:hint=" ? "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColorHint="@color/clock_white"
+            android:textColor="@color/clock_white"
+            android:inputType="number"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnAnswerAndStopAlarm"
+        android:layout_below="@id/layoutQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Kapat"
+        android:layout_above="@id/space"
+        android:background="@color/deep_orange_600"
+        android:shadowColor="@color/clock_white"
+        android:textColor="@color/clock_white"
+        android:textSize="20dp"/>
+</RelativeLayout>
+
+
+
+

@@ -33,6 +33,7 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
     private ToggleButton sun;
     private Button kaydet;
     private AlarmDbHelper db;
+    private Button back;
 
     private boolean islem;
     private int alarmId;
@@ -40,6 +41,11 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
     AlarmModel newAlarm;
     Intent intent;
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +62,33 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
 
         //Eğer güncelleme yapılacaksa istenilen alarm bligileri yazdırılıyor
         if(islem){
-            AlarmOlustur();
+            toolbar.setTitle("Alarm güncelle");
+            alarmOlustur();
             timePicker.setCurrentHour(newAlarm.getHour());
             timePicker.setCurrentMinute(newAlarm.getMinute());
             mon.setChecked(newAlarm.isMonday());
-            thu.setChecked(newAlarm.isTuesday());
+            tue.setChecked(newAlarm.isTuesday());
             wed.setChecked(newAlarm.isWednesday());
             thu.setChecked(newAlarm.isThursday());
             fri.setChecked(newAlarm.isFriday());
             sat.setChecked(newAlarm.isSaturday());
             sun.setChecked(newAlarm.isSunday());
         }
+        else
+            toolbar.setTitle("Yeni alarm ekle");
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(AddUpdateAlarmActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //kaydet butonuna basılması
         saveNewAlarm();
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +102,7 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
     }
 
     public void init() {
+        back = (Button)findViewById(R.id.btnBack);
         timePicker = (TimePicker) findViewById(R.id.timepicker);
         timePicker.setIs24HourView(true);
         mon = (ToggleButton) findViewById(R.id.toggleMonday2);
@@ -108,19 +128,9 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
                 if(!islem)
                 {
                     newAlarm = new AlarmModel();
-                    newAlarm.setHour(timePicker.getCurrentHour());
-                    newAlarm.setMinute(timePicker.getCurrentMinute());
-                    newAlarm.setId(12);
-                    newAlarm.setIsActive(true);
-                    newAlarm.setMonday(mon.isChecked());
-                    newAlarm.setTuesday(thu.isChecked());
-                    newAlarm.setWednesday(wed.isChecked());
-                    newAlarm.setThursday(thu.isChecked());
-                    newAlarm.setFriday(fri.isChecked());
-                    newAlarm.setSaturday(sat.isChecked());
-                    newAlarm.setSaturday(sun.isChecked());
+                    setAlarmContent();
 
-                    if (db.InsertAttachedAlarm(newAlarm.getId(), newAlarm.getHour(), newAlarm.getMinute(),
+                    if (db.InsertAttachedAlarm(newAlarm.getHour(), newAlarm.getMinute(),
                             newAlarm.isMonday(), newAlarm.isTuesday(), newAlarm.isWednesday(), newAlarm.isThursday(),
                             newAlarm.isFriday(), newAlarm.isSaturday(), newAlarm.isSunday(), newAlarm.isActive())) {
                         Intent intent = new Intent(AddUpdateAlarmActivity.this, MainActivity.class);
@@ -132,17 +142,8 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
                 //Uzun tıklama ile buraya gelinmiş ise yani güncelleme yapılacaksa
                 else
                 {
-                    AlarmOlustur();
-                    newAlarm.setHour(timePicker.getCurrentHour());
-                    newAlarm.setMinute(timePicker.getCurrentMinute());
-                    newAlarm.setIsActive(true);
-                    newAlarm.setMonday(mon.isChecked());
-                    newAlarm.setTuesday(thu.isChecked());
-                    newAlarm.setWednesday(wed.isChecked());
-                    newAlarm.setThursday(thu.isChecked());
-                    newAlarm.setFriday(fri.isChecked());
-                    newAlarm.setSaturday(sat.isChecked());
-                    newAlarm.setSaturday(sun.isChecked());
+                    alarmOlustur();
+                    setAlarmContent();
 
                     if (db.UpdateAttachedAlarm(newAlarm.getId(), newAlarm.getHour(), newAlarm.getMinute(),
                             newAlarm.isMonday(), newAlarm.isTuesday(), newAlarm.isWednesday(), newAlarm.isThursday(),
@@ -157,12 +158,27 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
         });
     }
 
-    public void AlarmOlustur()
+    public void alarmOlustur()
     {
         //İlgili alarmı getirir
         alarmId= intent.getIntExtra("alarmId",0);
         newAlarm=new AlarmModel();
         newAlarm=db.getAlarm(alarmId);
+    }
+
+    //alarmın içeriği
+    public void setAlarmContent()
+    {
+        newAlarm.setHour(timePicker.getCurrentHour());
+        newAlarm.setMinute(timePicker.getCurrentMinute());
+        newAlarm.setIsActive(true);
+        newAlarm.setMonday(mon.isChecked());
+        newAlarm.setTuesday(tue.isChecked());
+        newAlarm.setWednesday(wed.isChecked());
+        newAlarm.setThursday(thu.isChecked());
+        newAlarm.setFriday(fri.isChecked());
+        newAlarm.setSaturday(sat.isChecked());
+        newAlarm.setSaturday(sun.isChecked());
     }
 
 

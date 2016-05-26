@@ -35,14 +35,20 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     int hourSet;
     int minuteSet;
 
-    private TimePickerDialog tpd;
     CustomButtonListener customListener;
 
     public interface CustomButtonListener {
         public void onDeleteButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
         public void onTimeSetButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
         public void onExpandToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
-
+        public void onMondayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onTuesdayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onWednesdayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onThursdayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onFridayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onSaturdayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onSundayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onOnOffSwitchClickListener(int position,AlarmModel alarm,ViewHolder vh);
     }
 
     public void setDeleteButtonClickListener(CustomButtonListener listener) {
@@ -54,9 +60,31 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     public void setExpandToggleButtonClickListener(CustomButtonListener listener){
         this.customListener = listener;
     }
+    public void setOnOffSwitchClickListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setMondayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setTuesdayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setWednesdayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setThursdayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setFridayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setSaturdayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
+    public void setSundayToggleButtonListener(CustomButtonListener listener){
+        this.customListener = listener;
+    }
 
-
-    //switch on-off ve haftanın günleri için de on ve set click listenerlar yapılacak
 
     public class ViewHolder {
         LinearLayout area;
@@ -126,9 +154,6 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
 
 
 
-
-
-
         //Kurulu alarmın timePickerDialog ile saat güncellemesi
         viewHolder.btnTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,143 +180,65 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
                     customListener.onDeleteButtonClickListener(position,alarm,viewHolder);
             }
         });
-
-
-
-
-
-        //alarmın aktif olup olmama durumunu günceller
-        viewHolder.onoff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        viewHolder.onoff.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-            {
-                if(isChecked)
-                   alarm.setIsActive(true);
-                else
-                    alarm.setIsActive(false);
-                updateAlarm(alarm);
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onOnOffSwitchClickListener(position,alarm,viewHolder);
             }
         });
-
-        viewHolder.area.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Intent intent=new Intent(context,AddUpdateAlarmActivity.class);
-                intent.putExtra("Islem", true);
-                intent.putExtra("alarmId", alarm.getId());
-                context.startActivity(intent);
-                return false;
-            }
-        });
-
-
-
-        /*
         viewHolder.mon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setMonday(mon.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onMondayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
         viewHolder.tue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setTuesday(tue.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onTuesdayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
         viewHolder.wed.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setWednesday(wed.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onWednesdayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
         viewHolder.thu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setThursday(thu.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onThursdayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
         viewHolder.fri.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setFriday(fri.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onFridayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
         viewHolder.sat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setSaturday(sat.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onSaturdayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
         viewHolder.sun.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                items.get(position).setSunday(sun.isChecked());
-                updateAlarm(items.get(position));
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onSundayToggleButtonClickListener(position,alarm,viewHolder);
             }
         });
-
-        */
 
         return convertView;
-
     }
-
-
-
-    private void timepickerHandle(final int position) {
-
-
-        tpd = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override//istenilen alarm saati bilgileri buraya geliyor.
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                hourSet = hourOfDay;
-                minuteSet=minute;
-                items.get(position).setHour(hourSet);
-                items.get(position).setMinute(minuteSet);
-                updateAlarm(items.get(position));
-
-                //getView(position,convertView,parent);
-                //bir sonraki sıradakinin butonunun textini değiştiriyor nedenini bulamadım
-                //btnTime.setText(items.get(position).toString());
-            }
-        }, items.get(position).getHour(),items.get(position).getMinute(), true);
-
-        tpd.setTitle("Saat Seçiniz");
-        tpd.setButton(TimePickerDialog.BUTTON_POSITIVE, "Ayarla", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        tpd.setButton(TimePickerDialog.BUTTON_NEGATIVE, "İptal", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tpd.dismiss();
-            }
-        });
-        tpd.show();
-    }
-
-
-    private void updateAlarm(AlarmModel alarm)
-    {
-        AlarmDbHelper alarmdb=new AlarmDbHelper(context);
-        boolean result=alarmdb.UpdateAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
-                , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
-                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
-        if(result==false)
-            Toast.makeText(context,"Güncelleme Ekleme Başarısız",Toast.LENGTH_SHORT).show();
-    }
-
-
-
 
 
 }
