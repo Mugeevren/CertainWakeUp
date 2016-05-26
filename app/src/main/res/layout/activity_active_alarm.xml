@@ -51,7 +51,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Kapat"
-            android:layout_above="@id/space"
             android:background="@color/deep_orange_600"
             android:shadowColor="@color/clock_white"
             android:textColor="@color/clock_white"
@@ -59,6 +58,7 @@
 
         <Space android:layout_height="20dp"
             android:id="@+id/space"
+            android:layout_below="@id/btnStopAlarm"
             android:layout_width="match_parent"
             android:layout_centerInParent="true" >
 

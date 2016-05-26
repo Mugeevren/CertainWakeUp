@@ -12,8 +12,7 @@
     <LinearLayout
         android:id="@+id/layoutKalan"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/chronometer">
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/kalanText"
             android:layout_width="wrap_content"
@@ -27,6 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/chronometer"
         android:layout_weight="0.03"
+        android:layout_toRightOf="@id/layoutKalan"
         android:layout_centerHorizontal="true"
         android:textColor="@color/clock_white"
         android:textColorHighlight="@color/deep_orange_500"
