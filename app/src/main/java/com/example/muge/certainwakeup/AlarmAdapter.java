@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -49,6 +50,9 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
         public void onSaturdayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
         public void onSundayToggleButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
         public void onOnOffSwitchClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onSettingsOfAlarmButtonClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onSnoozeCheckBoxClickListener(int position,AlarmModel alarm,ViewHolder vh);
+        public void onVibrateCheckBoxClickListener(int position,AlarmModel alarm,ViewHolder vh);
     }
 
     public void setDeleteButtonClickListener(CustomButtonListener listener) {
@@ -84,16 +88,26 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
     public void setSundayToggleButtonListener(CustomButtonListener listener){
         this.customListener = listener;
     }
+    public void setSettingsOfAlarmButtonClickListener(CustomButtonListener listener) {
+        this.customListener = listener;
+    }
+    public void setSnoozeCheckBoxClickListener(CustomButtonListener listener) {
+        this.customListener = listener;
+    }
+    public void setVibrateCheckBoxClickListener(CustomButtonListener listener) {
+        this.customListener = listener;
+    }
 
 
     public class ViewHolder {
-        LinearLayout area;
+        LinearLayout area,layErteleme;
         Button btnTime;
         Switch onoff;
-        TextView alarmId;
+        TextView alarmId,tvAlarmLabel,tvErtelemeSayisi;
         LinearLayout expand_area;
         ToggleButton expandActivate,mon,tue,wed,thu,fri,sat,sun;
-        ImageButton btnDelete;
+        ImageButton btnDelete,btnSettingsOfAlarm;
+        CheckBox ertelemeAktif,titresimAktif;
     }
 
 
@@ -130,6 +144,12 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
             viewHolder.sun = (ToggleButton)convertView.findViewById(R.id.toggleSunday);
             viewHolder.btnDelete = (ImageButton)convertView.findViewById(R.id.delete);
             viewHolder.area=(LinearLayout)convertView.findViewById(R.id.area);
+            viewHolder.btnSettingsOfAlarm = (ImageButton)convertView.findViewById(R.id.settingOfAlarm);
+            viewHolder.ertelemeAktif = (CheckBox)convertView.findViewById(R.id.cbErtelemeAktif);
+            viewHolder.tvErtelemeSayisi = (TextView)convertView.findViewById(R.id.ertSayisi);
+            viewHolder.tvAlarmLabel = (TextView)convertView.findViewById(R.id.tvAlarmLabel);
+            viewHolder.titresimAktif = (CheckBox)convertView.findViewById(R.id.vibrate_onoff);
+            viewHolder.layErteleme = (LinearLayout)convertView.findViewById(R.id.layErteleme);
 
             convertView.setTag(viewHolder);
         }
@@ -152,6 +172,14 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
         viewHolder.sat.setChecked(alarm.isSaturday());
         viewHolder.sun.setChecked(alarm.isSunday());
 
+        viewHolder.tvAlarmLabel.setText(alarm.getLabel());
+        //ses ayarları eklenecek
+        viewHolder.titresimAktif.setChecked(alarm.isVibration());
+        viewHolder.ertelemeAktif.setChecked(alarm.isSnooze());
+        if (alarm.getSnoozeCount()==0)
+            viewHolder.tvErtelemeSayisi.setText("Sınırsız");
+        else
+            viewHolder.tvErtelemeSayisi.setText(String.valueOf(alarm.getSnoozeCount()));
 
 
         //Kurulu alarmın timePickerDialog ile saat güncellemesi
@@ -234,6 +262,27 @@ class AlarmAdapter extends ArrayAdapter<AlarmModel>{
             public void onClick(View v) {
                 if (customListener!=null)
                     customListener.onSundayToggleButtonClickListener(position,alarm,viewHolder);
+            }
+        });
+        viewHolder.btnSettingsOfAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (customListener!=null)
+                    customListener.onSettingsOfAlarmButtonClickListener(position,alarm,viewHolder);
+            }
+        });
+        viewHolder.ertelemeAktif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onSnoozeCheckBoxClickListener(position,alarm,viewHolder);
+            }
+        });
+        viewHolder.sun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (customListener!=null)
+                    customListener.onVibrateCheckBoxClickListener(position,alarm,viewHolder);
             }
         });
 

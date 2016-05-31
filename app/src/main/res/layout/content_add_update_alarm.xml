@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none" >
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,20 +33,39 @@
         <TimePicker
             android:id="@+id/timepicker"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="170dp"
             android:timePickerMode="spinner"
             android:theme="@style/SetAlarmTheme"
             ></TimePicker>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layoutLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTimePicker">
+            <ImageView
+                android:id="@+id/ivLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src ="@drawable/ic_label"/>
+            <EditText
+                android:id="@+id/etAlarmLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/clock_white"
+                android:paddingLeft="10dp"
+                android:textSize="20dp"
+                android:text="Alarm deneme"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/repeat_days2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layoutTimePicker"
+        android:layout_below="@id/layoutLabel"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         >
 
         <ToggleButton
@@ -47,13 +78,13 @@
             android:textOff="Mon"
             android:textSize="10dp"
             style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
-            android:textColor="@color/time_text_color"/>
+            android:textColor="@color/deep_orange_900"/>
         <ToggleButton
             android:id="@+id/toggleTuesday2"
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:src="@drawable/toggle_underline"
-            android:textColor="@color/time_text_color"
+            android:textColor="@color/deep_orange_900"
             android:textOn="Tue"
             android:textOff="Tue"
             android:textSize="10dp"/>
@@ -62,7 +93,7 @@
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:src="@drawable/toggle_underline"
-            android:textColor="@color/time_text_color"
+            android:textColor="@color/deep_orange_900"
             android:textOn="Wed"
             android:textOff="Wed"
             android:textSize="10dp"/>
@@ -75,14 +106,14 @@
             android:textOn="Thu"
             android:textOff="Thu"
             style="@style/Base.Widget.AppCompat.DrawerArrowToggle"
-            android:textColor="@color/time_text_color"
+            android:textColor="@color/deep_orange_900"
             android:textSize="10dp"/>
         <ToggleButton
             android:id="@+id/toggleFriday2"
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:src="@drawable/toggle_underline"
-            android:textColor="@color/time_text_color"
+            android:textColor="@color/deep_orange_900"
             android:textOn="Fri"
             android:textOff="Fri"
             android:textSize="10dp"/>
@@ -91,7 +122,7 @@
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:src="@drawable/toggle_underline"
-            android:textColor="@color/time_text_color"
+            android:textColor="@color/deep_orange_900"
             android:textOn="Sat"
             android:textOff="Sat"
             android:textSize="10dp"/>
@@ -100,53 +131,294 @@
             android:layout_width="45dp"
             android:layout_height="35dp"
             android:src="@drawable/toggle_underline"
-            android:textColor="@color/time_text_color"
+            android:textColor="@color/deep_orange_900"
             android:textOn="Sun"
             android:textOff="Sun"
             android:textSize="10dp"/>
 
     </LinearLayout>
-    <!--Alarm müzik ve titreşim alanı-->
-    <RelativeLayout
-        android:layout_marginTop="10dp"
-        android:id="@+id/muzik"
+
+
+    <Button
+        android:id="@+id/expandablebtnSes"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/repeat_days2"
+        android:background="#ba1f04"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:paddingRight="10dp"
+        android:paddingTop="15dp"
+        android:text="Ses Ayarları"
+        android:textColor="#fff" />
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayoutSes"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/expandablebtnSes"
+        android:background="#90ba1f04"
+        android:padding="16dp"
+        app:ael_duration="100"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--Alarm müziği ayarlama alanı-->
+            <TextView
+                android:id="@+id/choose_ringtone2"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/item_background"
+                android:clickable="true"
+                android:textColor="@color/clock_white"
+                android:text="Müzik Sesi"
+                android:textSize="15dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lay1">
+            <!--Alarm ses seviyesi ayarlama alanı-->
+            <TextView
+                android:id="@+id/volume"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/item_background"
+                android:clickable="true"
+                android:textColor="@color/clock_white"
+                android:paddingTop="20dp"
+                android:text="Ses Seviyesi "
+                android:textSize="15dp"
+                />
+            <SeekBar
+                android:id="@+id/seekbarVolume"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/volume"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lay2">
+            <!--Alarm titreşim seçimi-->
+            <CheckBox
+                android:id="@+id/vibrate_onoff2"
+                android:text="@string/alarm_vibrate"
+                android:textColor="@color/clock_gray"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="20dp"
+                android:textSize="15dp"
+                />
+        </LinearLayout>
+
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+
+    <Button
+        android:id="@+id/expandablebtnSonlandirma"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expandableLayoutSes"
+        android:background="#b77803"
+        android:paddingTop="15dp"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:paddingRight="10dp"
+        android:text="Sonlandırma Seçenekleri"
+        android:textColor="#fff" />
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayoutSonlandirma"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/expandablebtnSonlandirma"
+        android:background="#90b77803"
+        android:padding="16dp"
+        app:ael_duration="100"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
+            <Button
+                android:id="@+id/btnDene"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lap"
+                android:background="@color/deep_orange_800"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:clickable="false"
+                android:text="Dene"
+                android:textColor="@color/clock_white"/>
+            <RadioGroup
+                android:id="@+id/rgKriter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#90b7783f"
+                android:onClick="rgKriterOnClick"
+                >
+                <RadioButton
+                    android:id="@+id/rbYokKriter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kriter yok"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/rbSoruKriter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Soru-Cevap"/>
+                <RadioButton
+                    android:id="@+id/rbMatKriter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Matematik İşlemi"/>
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/rgZorluk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#90b7783f"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone"
+                android:onClick="rgZorlukOnClick"
+                >
+                <RadioButton
+                    android:id="@+id/rbKolay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kolay"
+                    android:checked="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/clock_white"/>
+                <RadioButton
+                    android:id="@+id/rbOrta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Orta"
+                    android:textSize="14dp"
+                    android:textColor="@color/clock_white"/>
+                <RadioButton
+                    android:id="@+id/rbZor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Zor"
+                    android:textSize="14dp"
+                    android:textColor="@color/clock_white"/>
+            </RadioGroup>
+
+
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+    <Button
+        android:id="@+id/expandablebtnErteleme"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expandableLayoutSonlandirma"
+        android:background="#10a106"
+        android:paddingTop="15dp"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:paddingRight="10dp"
+        android:text="Erteleme Ayarları"
+        android:textColor="#fff" />
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayoutErteleme"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@+id/expandablebtnErteleme"
+        android:background="#9010a106"
+        android:padding="16dp"
+        app:ael_duration="400"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/cbErtelemeAktif2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ertele"
+            android:checked="true"/>
+        <Space
+            android:id="@+id/space2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/cbErtelemeAktif2"/>
+        <TextView
+            android:id="@+id/ertelemeSayisiDialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:layout_below="@id/space2"
+            android:text="Erteleme sayısını sınırlandır  "
+            android:clickable="true"/>
+        <TextView
+            android:id="@+id/tvErtelemeSayisi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:layout_below="@id/ertelemeSayisiDialog"
+            android:text="1"/>
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+
+    <Button
+        android:id="@+id/expandablebtnDiger"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/expandableLayoutErteleme"
+        android:background="#066da1"
+        android:paddingTop="15dp"
+        android:drawableRight="@android:drawable/arrow_down_float"
+        android:paddingRight="10dp"
+        android:text="Diğer Ayarlar"
+        android:textColor="#fff" />
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableLayoutDiger"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/repeat_days2"
-        >
-        <!--Alarm müziği ayarlama alanı-->
+        android:layout_below="@+id/expandablebtnDiger"
+        android:background="#90066da1"
+        android:padding="16dp"
+        app:ael_duration="400"
+        app:ael_expanded="false"
+        app:ael_interpolator="bounce"
+        app:ael_orientation="vertical">
+
         <TextView
-            android:id="@+id/choose_ringtone2"
-            android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:background="@drawable/item_background"
-            android:clickable="true"
-            android:textColor="@color/clock_white"
-            android:layout_toLeftOf="@+id/vibrate_onoff"
-            android:text="Müzik Sesi"
-            android:textSize="20dp"
-            />
-        <!--Alarm titreşim seçimi-->
-        <CheckBox
-            android:id="@+id/vibrate_onoff2"
-            android:text="@string/alarm_vibrate"
-            android:textColor="@color/clock_gray"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_alignParentRight="true"
-            android:textSize="20dp"
-            />
-    </RelativeLayout>
+            android:text="diğer ayarlar burada yaptırılacaktır." />
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
 
     <Button
         android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/clock_gray"
-        android:layout_below="@+id/muzik"
+        android:background="@color/deep_orange_900"
+        android:layout_below="@id/expandableLayoutDiger"
         android:text="@string/Alarm_Kaydet"
-        android:textColor="@color/blackish_trans"
+        android:textColor="@color/clock_white"
         android:textStyle="bold"
         android:textSize="20dp"
         android:layout_marginTop="10dp"/>
 </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

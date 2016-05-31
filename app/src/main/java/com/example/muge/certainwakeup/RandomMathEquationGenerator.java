@@ -61,8 +61,13 @@ public class RandomMathEquationGenerator {
         }
         else if (op==2)//çıkarma
         {
-            answer = num1-num2;
-            equation = num1+" - "+num2+" = ";
+            if(num1>num2) {
+                answer = num1 - num2;
+                equation = num1 + " - " + num2 + " = ";
+            }else{
+                answer = num2 - num1;
+                equation = num2 + " - " + num1 + " = ";
+            }
         }
         else//çarpma
         {
@@ -92,23 +97,52 @@ public class RandomMathEquationGenerator {
         else{
             if (op1==1&&op2==1)//toplama-toplama
             {
-                answer = num1+num2;
+                answer = num1+num2+num3;
                 equation = num1+" + "+num2+" + "+num3+" = ";
             }
             else if (op1==1&&op2==2)//toplama-çıkarma
             {
-                answer = num1-num2;
-                equation = num1+" + "+num2+" - "+num3+" = ";
+                answer = num1+num2-num3;
+                if (answer>0)
+                    equation = num1+" + "+num2+" - "+num3+" = ";
+                else//num3>(num1+num2) ise num3 ve num1 yeri değiştirilsin
+                {
+                    answer = num3+num2-num1;
+                    equation = num3+" + "+num2+" - "+num1+" = ";
+                }
             }
             else if (op1==2 && op2==1)//çıkarma-toplama
             {
-                answer = num1*num2;
-                equation = num1+" - "+num2+" + "+num3+" = ";
+                answer = num1-num2+num3;
+                if (answer>0)
+                    equation = num1+" - "+num2+" + "+num3+" = ";
+                else//num1<(num2+num3) ise
+                {
+                    if (num2>num1)
+                    {
+                        answer = num2-num1+num3;
+                        equation = num2+" - "+num1+" + "+num3+" = ";
+                    }
+                    else if (num3>num1)
+                    {
+                        answer = num3-num2+num1;
+                        equation = num3+" - "+num2+" + "+num1+" = ";
+                    }
+                    else//tekrar random üretimi yapacak
+                    {
+                        normalMathEquation(r);
+                    }
+                }
             }
             else//çıkarma-çıkarma
             {
                 answer = num1-num2-num3;
-                equation = num1+" - "+num2+" - "+num3+" = ";
+                if (answer>0)
+                    equation = num1+" - "+num2+" - "+num3+" = ";
+                else//eğer cevap 0 dan küçük gelirse tekrar random üretim yapsın(çok fazla kontrol var)
+                {
+                    normalMathEquation(r);
+                }
             }
         }
         h.put(equation,answer);
@@ -129,43 +163,91 @@ public class RandomMathEquationGenerator {
 
         if (op1==1&&op2==1)//toplama-toplama
         {
+            num1 = r.nextInt(20);
+            num2 = r.nextInt(20);
+            num3 = r.nextInt(20);
             answer = num1+num2+num3;
             equation = num1+" + "+num2+" + "+num3+" = ";
         }
         else if (op1==1&&op2==2)//toplama-çıkarma
         {
+            num1 = r.nextInt(20);
+            num2 = r.nextInt(20);
             answer = num1+num2-num3;
-            equation = num1+" + "+num2+" - "+num3+" = ";
+            if (answer>0)
+                equation = num1+" + "+num2+" - "+num3+" = ";
+            else{
+                if (num1<num3)
+                {
+                    answer=num3+num2-num1;
+                    equation = num3+" + "+num2+" - "+num1+" = ";
+                }
+                else if(num2<num3)
+                {
+                    answer=num1+num3-num2;
+                    equation = num1+" + "+num3+" - "+num2+" = ";
+                }
+                else
+                    normalMathEquation(r);
+            }
         }
         else if (op1==1&&op2==3)//toplama-çarpma
         {
+            num1 = r.nextInt(20);
             answer = num1+num2*num3;
             equation = num1+" + "+num2+" * "+num3+" = ";
         }
         else if (op1==2 && op2==1)//çıkarma-toplama
         {
+            num1 = r.nextInt(20);
             answer = num1-num2+num3;
-            equation = num1+" - "+num2+" + "+num3+" = ";
+            if (answer>0)
+                equation = num1+" - "+num2+" + "+num3+" = ";
+            else if(num2>num1)
+            {
+                answer = num2-num1+num3;
+                equation = num2+" - "+num1+" + "+num3+" = ";
+            }
+            else if (num3>num1)
+            {
+                answer = num3-num2+num1;
+                equation = num3+" - "+num2+" + "+num1+" = ";
+            }
+            else
+                normalMathEquation(r);
         }
         else if (op1==2 && op2==2)//çıkarma-çıkarma
         {
+            num1 = r.nextInt(30);
+            num2 = r.nextInt(15);
             answer = num1-num2-num3;
-            equation = num1+" - "+num2+" - "+num3+" = ";
+            if (answer>0)
+                equation = num1+" - "+num2+" - "+num3+" = ";
+            else
+                normalMathEquation(r);
         }
         else if (op1==2 && op2==3)//çıkarma-çarpma
         {
+            num1 = r.nextInt(30);
             answer = num1-num2*num3;
-            equation = num1+" - "+num2+" * "+num3+" = ";
+            if (answer>0)
+                equation = num1+" - "+num2+" * "+num3+" = ";
+            else
+                normalMathEquation(r);
         }
         else if (op1==3 && op2==1)//çarpma-toplama
         {
+            num3 = r.nextInt(20);
             answer = num1*num2+num1;
             equation = num1+" * "+num2+" + "+num3+" = ";
         }
         else if (op1==3 && op2==2)//çarpma-çıkarma
         {
             answer = num1*num2-num3;
-            equation = num1+" * "+num2+" - "+num3+" = ";
+            if (answer>0)
+                equation = num1+" * "+num2+" - "+num3+" = ";
+            else
+                normalMathEquation(r);
         }
         else//çarpma-çarpma
         {

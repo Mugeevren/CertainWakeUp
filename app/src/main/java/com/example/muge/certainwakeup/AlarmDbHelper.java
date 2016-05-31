@@ -31,17 +31,21 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
     }
     @Override
     //AttachedAlarm tablosunu oluşturur.
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE AttachedAlarm("+"id INTEGER PRIMARY KEY,"+"hour INTEGER,"+"minute INTEGER,"+"monday INTEGER,"+"tuesday INTEGER,"+ "wednesday INTEGER,"+"thursday INTEGER,"+"friday INTEGER,"+"saturday INTEGER,"+"sunday INTEGER,"+"isActive INTEGER"+");");
+    public void onCreate(SQLiteDatabase db)
+    {
+        //sonlandırma kriteri 0 ise kriter yok, 1 ise soru-cevap,2 ise matematik işlemi
+        //zorluk seviyesimatematik işlemi değil ise 0 olsun.Eğer mat. islemi ise; 1 ise kolay,2 ise orta,3 ise zor olsun
+        db.execSQL("CREATE TABLE AttachedAlarm(id INTEGER PRIMARY KEY,hour INTEGER,minute INTEGER,monday INTEGER,tuesday INTEGER,wednesday INTEGER,thursday INTEGER,friday INTEGER,saturday INTEGER,sunday INTEGER,isActive INTEGER,label TEXT,sound TEXT,volume TEXT,vibration INTEGER,stopCriter INTEGER,difficulty INTEGER,snooze INTEGER,snoozeCount INTEGER);");
 
     }
 
     //Yeni alarm ekleme işlemleri
-    public boolean InsertAttachedAlarm(int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
+    public boolean InsertAttachedAlarm(int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act,String label,String sound,String volume,boolean vibration,int stopCriter,int difficulty,boolean snooze,int snoozeCount)
     {
         SQLiteDatabase db=getWritableDatabase();
 
         ContentValues newRow=new ContentValues();
+
         newRow.put("hour",hour);
         newRow.put("minute",minute);
         newRow.put("monday",mon);
@@ -52,7 +56,14 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         newRow.put("saturday",str);
         newRow.put("sunday",sun);
         newRow.put("isActive", act);
-
+        newRow.put("label",label);
+        newRow.put("sound",sound);
+        newRow.put("volume",volume);
+        newRow.put("vibration",vibration);
+        newRow.put("stopCriter",stopCriter);
+        newRow.put("difficulty",difficulty);
+        newRow.put("snooze",snooze);
+        newRow.put("snoozeCount",snoozeCount);
         db.insert("AttachedAlarm",null,newRow);
         return true;
     }
@@ -73,6 +84,7 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         db.delete("AttachedAlarm","",null);
     }
 
+    //TODO: label
     //attached alarmları listeler
     public void GetAttachedAlarm(ArrayList<AlarmModel> alarms)
     {
@@ -87,7 +99,9 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
                     cursor.getInt(0),cursor.getInt(1),cursor.getInt(2),
                     (cursor.getInt(3)!=0),(cursor.getInt(4)!=0),(cursor.getInt(5)!=0),
                     (cursor.getInt(6)!=0),(cursor.getInt(7)!=0),(cursor.getInt(8)!=0),
-                    (cursor.getInt(9)!=0),(cursor.getInt(10)!=0));
+                    (cursor.getInt(9)!=0),(cursor.getInt(10)!=0),cursor.getString(11),
+                    cursor.getString(12),cursor.getString(13),(cursor.getInt(14)!=0),
+                    cursor.getInt(15),cursor.getInt(16),(cursor.getInt(17)!=0),cursor.getInt(18));
             alarms.add(alarm);
             cursor.moveToNext();
         }
@@ -101,13 +115,15 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
                 cursor.getInt(0),cursor.getInt(1),cursor.getInt(2),
                 (cursor.getInt(3)!=0),(cursor.getInt(4)!=0),(cursor.getInt(5)!=0),
                 (cursor.getInt(6)!=0),(cursor.getInt(7)!=0),(cursor.getInt(8)!=0),
-                (cursor.getInt(9)!=0),(cursor.getInt(10)!=0));
+                (cursor.getInt(9)!=0),(cursor.getInt(10)!=0),cursor.getString(11),
+                cursor.getString(12),cursor.getString(13),(cursor.getInt(14)!=0),
+                cursor.getInt(15),cursor.getInt(16),(cursor.getInt(17)!=0),cursor.getInt(18));
         return alarm;
 
     }
 
     //İstenilen attached alarm Güncellemsi yapar.
-    public boolean UpdateAttachedAlarm(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
+    public boolean UpdateAttachedAlarm(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act,String label,String sound,String volume,boolean vibration,int stopCriter,int difficulty,boolean snooze,int snoozeCount)
     {
         SQLiteDatabase db=getWritableDatabase();
         ContentValues newRow=new ContentValues();
@@ -121,6 +137,14 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         newRow.put("saturday",str);
         newRow.put("sunday",sun);
         newRow.put("isActive", act);
+        newRow.put("label",label);
+        newRow.put("sound",sound);
+        newRow.put("volume",volume);
+        newRow.put("vibration",vibration);
+        newRow.put("stopCriter",stopCriter);
+        newRow.put("difficulty",difficulty);
+        newRow.put("snooze",snooze);
+        newRow.put("snoozeCount",snoozeCount);
         db.update("AttachedAlarm",newRow,"id=?",new String[] {Integer.toString(id)});
         return  true;
     }

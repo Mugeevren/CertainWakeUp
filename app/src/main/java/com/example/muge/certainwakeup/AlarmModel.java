@@ -21,6 +21,14 @@ public class AlarmModel {
     private boolean saturday;
     private boolean sunday;
     private boolean isActive;
+    private String label;
+    private String sound;
+    private String volume;
+    private boolean vibration;
+    private int stopCriter;
+    private int difficulty;
+    private boolean snooze;
+    private int snoozeCount;
     public int getId() {
         return id;
     }
@@ -108,6 +116,70 @@ public class AlarmModel {
         this.isActive = isActive;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getSound() {
+        return sound;
+    }
+
+    public void setSound(String sound) {
+        this.sound = sound;
+    }
+
+    public String getVolume() {
+        return volume;
+    }
+
+    public void setVolume(String volume) {
+        this.volume = volume;
+    }
+
+    public boolean isVibration() {
+        return vibration;
+    }
+
+    public void setVibration(boolean vibration) {
+        this.vibration = vibration;
+    }
+
+    public int getStopCriter() {
+        return stopCriter;
+    }
+
+    public void setStopCriter(int stopCriter) {
+        this.stopCriter = stopCriter;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public boolean isSnooze() {
+        return snooze;
+    }
+
+    public void setSnooze(boolean snooze) {
+        this.snooze = snooze;
+    }
+
+    public int getSnoozeCount() {
+        return snoozeCount;
+    }
+
+    public void setSnoozeCount(int snoozeCount) {
+        this.snoozeCount = snoozeCount;
+    }
+
     public AlarmModel(){
         setId(1);
         setHour(8);
@@ -121,10 +193,18 @@ public class AlarmModel {
         setFriday(true);
         setSaturday(false);
         setSunday(false);
+        setLabel("deneme alarm");
+        setSound(null);
+        setVolume(null);
+        setVibration(true);
+        setStopCriter(0);
+        setDifficulty(0);
+        setSnooze(false);
+        setSnoozeCount(0);
 
     }
 
-    public AlarmModel(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act)
+    public AlarmModel(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act,String label,String sound,String volume,boolean vibration,int stopCriter,int difficulty,boolean snooze,int snoozeCount)
     {
         setId(id);
         setHour(hour);
@@ -135,8 +215,16 @@ public class AlarmModel {
         setSaturday(str);
         setThursday(thu);
         setWednesday(wed);
-        setTuesday(thu);
+        setTuesday(tue);
         setSunday(sun);
+        setLabel(label);
+        setSound(sound);
+        setVolume(volume);
+        setVibration(vibration);
+        setStopCriter(stopCriter);
+        setDifficulty(difficulty);
+        setSnooze(snooze);
+        setSnoozeCount(snoozeCount);
     }
     @Override
     public String toString() {

@@ -65,6 +65,8 @@ public class ActiveAlarmActivity extends AppCompatActivity {
                 alarmSnooze();
             }
         });
+
+
         // execute alarm sound and vibration async task
         new SoundAlarm().execute();
 
@@ -128,7 +130,6 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object... params) {
 
-
             Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             if(alert == null){
                 // alert is null, using backup
@@ -149,6 +150,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             long[] pattern = { 1000, 1000 };
             vibrator.vibrate(pattern,0);
             Toast.makeText(getApplicationContext(), "alarm started", Toast.LENGTH_LONG).show();
+
 
             /*
             AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);

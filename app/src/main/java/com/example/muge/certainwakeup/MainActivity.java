@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
 
         private ArrayList<AlarmModel> alarms=new ArrayList<AlarmModel>();
         private ListView alarmList;
-        private ImageButton addAlarm;
+        private ImageButton addAlarm,btnSettingsOfAlarm;
         private AlarmAdapter adapter;
         private Button deneme;
 
@@ -69,49 +69,29 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
                     //Ekleme yapılaak activitynin baslatılamsı
 
                     Intent intent=new Intent(MainActivity.this,AddUpdateAlarmActivity.class);
-                    intent.putExtra("ButonAdi",false);
+                    intent.putExtra("Islem",false);
                     startActivity(intent);
                 }
             });
 
 
-            //// TODO: 7.5.2016 alarmlistesinin bir elemanına tıklandığında updatealarm ekranına yönlendirme 
-            /*
-            alarmList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(MainActivity.this, "teufchdanjlfc", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
-*/
+
 
 
 /*
             alarmdb.deleteAll();
-            AlarmModel alarm1 = new AlarmModel(2,9,30,true,false,false,false,false,false,false,true);
             AlarmModel alarm=new AlarmModel();
             insertDefaultAlarm(alarm);
+            AlarmModel alarm1=new AlarmModel(1,10,0,false,false,false,false,false,false,false,false,"sdkhxbacl",null,null,true,0,0,true,3);
             insertDefaultAlarm(alarm1);
 */
-           //alarmdb.deleteAll();
+            //alarmdb.deleteAll();
 
-            alarmdb.GetAttachedAlarm(alarms);//sql lite ile kayıtlı attached alarmları alarms listesine atar
+            alarmdb.GetAttachedAlarm(alarms);//sqlite ile kayıtlı attached alarmları alarms listesine atar
 
             //adaptor işlemleri
             alarmList=(ListView)findViewById(R.id.alarmList);
             refreshAdapter();
-
-
-
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
-            });
 
         }
 
@@ -136,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         alarmdb=new AlarmDbHelper(MainActivity.this);
         boolean result=alarmdb.InsertAttachedAlarm(alarm.getHour(), alarm.getMinute()
                 , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
-                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
+                alarm.isSaturday(), alarm.isSunday(), alarm.isActive(),alarm.getLabel(),alarm.getSound(),alarm.getVolume(),
+                alarm.isVibration(),alarm.getStopCriter(),alarm.getDifficulty(),alarm.isSnooze(),alarm.getSnoozeCount());
     }
 
 
@@ -147,7 +128,8 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         AlarmDbHelper alarmdb=new AlarmDbHelper(this);
         boolean result=alarmdb.UpdateAttachedAlarm(alarm.getId(), alarm.getHour(), alarm.getMinute()
                 , alarm.isMonday(), alarm.isTuesday(), alarm.isWednesday(), alarm.isThursday(), alarm.isFriday(),
-                alarm.isSaturday(), alarm.isSunday(), alarm.isActive());
+                alarm.isSaturday(), alarm.isSunday(), alarm.isActive(),alarm.getLabel(),alarm.getSound(),alarm.getVolume(),
+                alarm.isVibration(),alarm.getStopCriter(),alarm.getDifficulty(),alarm.isSnooze(),alarm.getSnoozeCount());
         if(result==false)
             Toast.makeText(this,"Güncelleme Ekleme Başarısız",Toast.LENGTH_SHORT).show();
     }
@@ -207,6 +189,38 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
     public void onOnOffSwitchClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
         alarm.setIsActive(vh.onoff.isActivated());
         updateAlarm(alarm);
+    }
+
+    @Override
+    public void onSettingsOfAlarmButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+        Intent intent=new Intent(MainActivity.this,AddUpdateAlarmActivity.class);
+        intent.putExtra("Islem",true);
+        intent.putExtra("alarmId",alarm.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onSnoozeCheckBoxClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+        alarm.setSnooze(vh.ertelemeAktif.isChecked());
+        if (vh.ertelemeAktif.isChecked()) {
+            vh.layErteleme.setVisibility(View.VISIBLE);
+            if (alarm.getSnoozeCount()==0) {
+                vh.tvErtelemeSayisi.setText("1");
+                alarm.setSnoozeCount(1);
+            }
+            else
+                vh.tvErtelemeSayisi.setText(String.valueOf(alarm.getSnoozeCount()));
+        }
+        else
+            vh.layErteleme.setVisibility(View.GONE);
+        updateAlarm(alarm);
+    }
+
+    @Override
+    public void onVibrateCheckBoxClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
+        alarm.setVibration(vh.titresimAktif.isChecked());
+        updateAlarm(alarm);
+
     }
 
 
