@@ -17,11 +17,11 @@ import java.util.ArrayList;
 public class AlarmDbHelper extends SQLiteOpenHelper {
     //sqlLite adımızı sabitledik
     private static String DB_NAME="CertainWakeUpDatabase";
-    private static int DB_VERSİON=1;
+    private static int DB_VERSION=1;
 
     public AlarmDbHelper(Context context)
     {
-        super(context, DB_NAME, null, DB_VERSİON);
+        super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override

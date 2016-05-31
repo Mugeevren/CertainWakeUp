@@ -25,10 +25,10 @@ public class RandomMathEquationGenerator {
         this.state=state;
     }
 
-    public HashMap<String,Integer> generateEquation()
+    public QuestionModel generateEquation()
     {
 
-        HashMap<String,Integer> h;
+        QuestionModel h;
         Random r = new Random();
         if (getState().equals(DifficultyLevel.EASY))
         {
@@ -45,12 +45,12 @@ public class RandomMathEquationGenerator {
         return h;
     }
 
-    private HashMap<String,Integer> easyMathEquation(Random r)
+    private QuestionModel easyMathEquation(Random r)
     {
         int num1,num2,num3,op;
         String equation = "";
         int answer;
-        HashMap<String,Integer> h = new HashMap<>(1);
+        QuestionModel h = new QuestionModel();
         num1 = r.nextInt(10);
         num2 = r.nextInt(10);
         op = r.nextInt(3);
@@ -74,16 +74,17 @@ public class RandomMathEquationGenerator {
             answer = num1*num2;
             equation = num1+" * "+num2+" = ";
         }
-        h.put(equation,answer);
+        h.setQuestion(equation);
+        h.setAnswer(String.valueOf(answer));
         return h;
     }
 
-    private HashMap<String,Integer> normalMathEquation(Random r)
+    private QuestionModel normalMathEquation(Random r)
     {
         int num1,num2,num3,op1,op2;
         String equation = "";
         int answer;
-        HashMap<String,Integer> h = new HashMap<>(1);
+        QuestionModel h = new QuestionModel();
         num1 = r.nextInt(10);
         num2 = r.nextInt(10);
         num3 = r.nextInt(10);
@@ -145,16 +146,17 @@ public class RandomMathEquationGenerator {
                 }
             }
         }
-        h.put(equation,answer);
+        h.setQuestion(equation);
+        h.setAnswer(String.valueOf(answer));
         return h;
     }
 
-    private HashMap<String,Integer> difficultMathEquation(Random r)
+    private QuestionModel difficultMathEquation(Random r)
     {
         int num1,num2,num3,op1,op2;
         String equation = "";
         int answer;
-        HashMap<String,Integer> h = new HashMap<>(1);
+        QuestionModel h = new QuestionModel();
         num1 = r.nextInt(10);
         num2 = r.nextInt(10);
         num3 = r.nextInt(10);
@@ -254,7 +256,8 @@ public class RandomMathEquationGenerator {
             answer = num1*num2*num3;
             equation = num1+" * "+num2+" * "+num3+" = ";
         }
-        h.put(equation,answer);
+        h.setQuestion(equation);
+        h.setAnswer(String.valueOf(answer));
         return h;
     }
 

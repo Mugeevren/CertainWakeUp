@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -30,11 +31,14 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
 
     private final static int RequestCode = 1;
-    private static final String TAG = "AlarmActivity";
+    private static final String TAG = "ActiveAlarmActivity";
 
     private MediaPlayer mp;
     private Vibrator vibrator;
     private int snoozeCounter;
+    private AlarmModel alarm;
+    private TextView tvAlarmClock;
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +46,20 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_active_alarm);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
+        tvAlarmClock = (TextView)findViewById(R.id.textClock);
 
-        // get the snoozeCounter value from the intent
-        Bundle extras = getIntent().getExtras();
+
+        // get alarmId and snoozeCount from the intent
+        extras = getIntent().getExtras();
         if (extras != null) {
-            snoozeCounter = extras.getInt("SNOOZE_COUNTER");
+            alarmOlustur(extras.getInt("alarm"));
+            tvAlarmClock.setText(alarm.toString());
+            if (extras.getBoolean("isSnoozed",false)==true)//erteleme ile gelen alarm ise
+                snoozeCounter = extras.getInt("snoozeCounter");
+            else//ilk çalışı ise
+            {
+                snoozeCounter = alarm.getSnoozeCount();
+            }
         }
         Log.d(TAG, "onCreate() - snoozeCounter = " + snoozeCounter);
         // set button listeners
@@ -54,7 +67,12 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         buttonOff.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                alarmOff();
+                if (alarm.getStopCriter()==0) {
+                    Intent intent = new Intent(ActiveAlarmActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else
+                    alarmOffIntent();
             }
         });
         Button buttonSnooze = (Button) findViewById(R.id.btnSnoozeAlarm);
@@ -62,26 +80,44 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         buttonSnooze.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                alarmSnooze();
+                extras.getBoolean("isSnoozed",true);
+                extras.putInt("snoozeCounter",snoozeCounter);
+                alarmOffIntent();
+                //alarmSnooze(); // bu çalıştırılmalı
             }
         });
 
 
         // execute alarm sound and vibration async task
-        new SoundAlarm().execute();
+        //new SoundAlarm().execute();
 
+    }
+
+    public void alarmOlustur(int alarmId)
+    {
+        //İlgili alarmı getirir
+        AlarmDbHelper db = new AlarmDbHelper(ActiveAlarmActivity.this);
+        alarm=new AlarmModel();
+        alarm=db.getAlarm(alarmId);
     }
 
     /**
      * Method used to deactivate the alarm after the user used the "Wake up"
      * button.
      */
-    private void alarmOff() {
+    private void alarmOffIntent() {
+
+        Intent intent=new Intent(ActiveAlarmActivity.this,EndAlarmMathEquationActivity.class);
+        intent.putExtras(extras);
+        startActivity(intent);
+
+        /*
         new StopAlarm().execute();
         Log.d(TAG, "alarmOff() - snoozeCounter = " + snoozeCounter);
         snoozeCounter = 0;
         resetAlarmService();
         finish();
+        */
     }
 
     /**

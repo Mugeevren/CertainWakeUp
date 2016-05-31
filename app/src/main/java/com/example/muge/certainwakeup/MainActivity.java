@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
             deneme.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(MainActivity.this,EndAlarmMathEquationActivity.class);
+                    Intent intent=new Intent(MainActivity.this,ActiveAlarmActivity.class);
+                    intent.putExtra("alarm",alarms.get(0).getId());//şuan listenin başındaki alarma göre çalışsın
                     startActivity(intent);
                 }
             });
