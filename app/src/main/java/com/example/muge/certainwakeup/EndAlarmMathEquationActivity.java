@@ -37,7 +37,7 @@ public class EndAlarmMathEquationActivity extends AppCompatActivity {
     Chronometer chronometer;
     Bundle extras;
     AlarmModel alarm;
-    int alarmStopCriter;
+    int alarmStopCriter,difficultyLevel;
     List<QuestionModel> sorular;
     QuestionModel soru;
 
@@ -52,8 +52,18 @@ public class EndAlarmMathEquationActivity extends AppCompatActivity {
 
         extras = getIntent().getExtras();
         if (extras != null) {
-            alarmOlustur(extras.getInt("alarm"));
-            alarmStopCriter = alarm.getStopCriter();
+            if (extras.getInt("alarm")==-1)//dene butonu ile gönderilmiş ise
+            {
+                alarmStopCriter = extras.getInt("alarmStopCriter");
+                difficultyLevel = extras.getInt("difficultyLevel",0);
+            }
+            else//alarm seçilip gönderilmiş ise
+            {
+                alarmOlustur(extras.getInt("alarm"));
+                alarmStopCriter = alarm.getStopCriter();
+                difficultyLevel = alarm.getDifficulty();
+            }
+
             if (alarmStopCriter==1)//soru_cevap
             {
                 answer.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -72,9 +82,9 @@ public class EndAlarmMathEquationActivity extends AppCompatActivity {
             {
                 answer.setInputType(InputType.TYPE_CLASS_NUMBER);
                 RandomMathEquationGenerator generator;
-                if (alarm.getDifficulty()==0)
+                if (difficultyLevel==1)
                     generator = new RandomMathEquationGenerator(DifficultyLevel.EASY);
-                else if (alarm.getDifficulty()==1)
+                else if (difficultyLevel==2)
                     generator = new RandomMathEquationGenerator(DifficultyLevel.NORMAL);
                 else
                     generator = new RandomMathEquationGenerator(DifficultyLevel.DIFFICULT);

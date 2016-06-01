@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -188,8 +189,16 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
 
     @Override
     public void onOnOffSwitchClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
-        alarm.setIsActive(vh.onoff.isActivated());
+        alarm.setIsActive(vh.onoff.isChecked());
         updateAlarm(alarm);
+        if (vh.onoff.isChecked())//servis başlatılsın
+        {
+            startAlarmService(alarm);
+        }
+        else//servis durdurulsun
+        {
+            stopAlarmService(alarm);
+        }
     }
 
     @Override
@@ -276,6 +285,30 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
         }
     }
 
+
+    /**
+     * Stop any active AlarmService instances and start a new one.
+     */
+    private void startAlarmService(AlarmModel alarm) {
+        Log.d("MainActivity", "startAlarmService()");
+        Intent intent = new Intent(this,
+                AlarmService.class);
+        intent.putExtra("snoozeCounter",alarm.getSnoozeCount() );
+        intent.putExtra("alarm",alarm.getId());
+        this.stopService(intent);
+        this.startService(intent);
+    }
+    /**
+     * Stop any active AlarmService instances and start a new one.
+     */
+    private void stopAlarmService(AlarmModel alarm) {
+        Log.d("MainActivity", "stopAlarmService()");
+        Intent intent = new Intent(getApplicationContext(),
+                AlarmService.class);
+        intent.putExtra("snoozeCounter",0 );
+        intent.putExtra("alarm",alarm.getId());
+        getApplicationContext().stopService(intent);
+    }
 
 /*
     public void AlarmCall()

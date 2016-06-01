@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Created by muge on 15.5.2016.
@@ -15,6 +16,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
     Context context;
     int snoozeCounter;
+    int alarm;
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -23,12 +25,14 @@ public class AlarmReceiver extends BroadcastReceiver{
         //set bundle with snooze counter
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            snoozeCounter = extras.getInt("SNOOZE_COUNTER");
+            snoozeCounter = extras.getInt("snoozeCounter");
+            alarm = extras.getInt("alarm");
         }
         // and start new activity
         Intent newIntent = new Intent(context, ActiveAlarmActivity.class);
-        newIntent.putExtra("SNOOZE_COUNTER", snoozeCounter);
+        newIntent.putExtras(extras);
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(newIntent);
+        Toast.makeText(context,"alarm receiverîn içerisinde",Toast.LENGTH_LONG).show();
     }
 }

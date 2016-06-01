@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Calendar;
 
 public class ActiveAlarmActivity extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private final static int RequestCode = 1;
     private static final String TAG = "ActiveAlarmActivity";
 
-    private MediaPlayer mp;
+    private MediaPlayer player;
     private Vibrator vibrator;
     private int snoozeCounter;
     private AlarmModel alarm;
@@ -89,7 +90,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
 
 
         // execute alarm sound and vibration async task
-        //new SoundAlarm().execute();
+        new SoundAlarm().execute();
 
     }
 
@@ -158,6 +159,37 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         startService(intent);
     }
 
+
+    private void play(Context context, Uri alert) {
+        player = new MediaPlayer();
+        try {
+            player.setDataSource(context, alert);
+            final AudioManager audio = (AudioManager) context
+                    .getSystemService(Context.AUDIO_SERVICE);
+            if (audio.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+                player.setAudioStreamType(AudioManager.STREAM_ALARM);
+                player.prepare();
+                player.start();
+            }
+        } catch (IOException e) {
+            Log.e("Error....", "Check code...");
+        }
+    }
+
+
+    private Uri getAlarmSound() {
+        Uri alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+
+        if (alertSound == null) {
+            alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            if (alertSound == null) {
+                alertSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            }
+        }
+        return alertSound;
+    }
+
+
     /**
      * AsynTask used for starting the alarm sound and vibration.
      */
@@ -166,6 +198,7 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object... params) {
 
+            /*
             Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             if(alert == null){
                 // alert is null, using backup
@@ -186,23 +219,12 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             long[] pattern = { 1000, 1000 };
             vibrator.vibrate(pattern,0);
             Toast.makeText(getApplicationContext(), "alarm started", Toast.LENGTH_LONG).show();
+*/
 
+            play(ActiveAlarmActivity.this,getAlarmSound());
 
-            /*
-            AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-            int maxVolume = audioManager
-                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-                    maxVolume / 2, 0);
-            mp = MediaPlayer.create(App.getInstance().getApplicationContext(),
-                    R.raw.alarm);
-            mp.setLooping(true);
-            mp.start();
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            long[] pattern = { 1000, 1000 };
-            vibrator.vibrate(pattern, 0);
-            Log.d(TAG, "Is playing: " + mp.isPlaying());
-            */
+            Log.d(TAG, "Is playing: " + player.isPlaying());
+
             return null;
         }
     }
@@ -213,9 +235,9 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private class StopAlarm extends AsyncTask<Object, Object, Object> {
         @Override
         protected Object doInBackground(Object... params) {
-            mp.stop();
-            mp.reset();
-            mp.release();
+            player.stop();
+            player.reset();
+            player.release();
             vibrator.cancel();
             return null;
         }

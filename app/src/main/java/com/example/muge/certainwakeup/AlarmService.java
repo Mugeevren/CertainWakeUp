@@ -21,6 +21,7 @@ public class AlarmService extends Service {
 
     final static int RequestCode = 1;
     int snoozeCounter;
+    AlarmModel alarm;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -38,21 +39,19 @@ public class AlarmService extends Service {
         //erteleme sayısı da alarm bilgisi ile gelecek.
         //setAlarm metodu çağırılacak ve notification oluşturulacak
 
-
-        /*
         Log.d(TAG, "onStartCommand");
         // get snooze counter
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            snoozeCounter = extras.getInt("SNOOZE_COUNTER");
+            snoozeCounter = extras.getInt("snoozeCounter");
+            alarmOlustur(extras.getInt("alarm"));
         }
 
-        // get alarm info
-        UserData userData = App.loadUserData();
-        UserData.AlarmInfo alarmInfo = userData.getNextAlarmInfo();
-        String nextAlarmString = userData.getNextAlarmTime();
+
         // set alarm
-        setAlarm(alarmInfo);
+        setAlarm(alarm);
+
+        /*
         // build notification
         NotificationCompat.Builder noteBuilder = new NotificationCompat.Builder(
                 this);
@@ -61,9 +60,11 @@ public class AlarmService extends Service {
         noteBuilder.setContentText(getString(R.string.service_note_message)
                 + "\n" + nextAlarmString);
         Notification note = noteBuilder.getNotification();
+*/
         // start service
-        startForeground(1, note);
-        */
+        //startForeground(1, null);
+
+
         return START_NOT_STICKY;
     }
 
@@ -76,7 +77,8 @@ public class AlarmService extends Service {
     private void setAlarm(AlarmModel alarmInfo) {
         // set snooze counter
         Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        intent.putExtra("SNOOZE_COUNTER", snoozeCounter);
+        intent.putExtra("snoozeCounter", snoozeCounter);
+        intent.putExtra("alarm",alarmInfo.getId());
         // create intent
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 getApplicationContext(), RequestCode, intent,
@@ -88,15 +90,15 @@ public class AlarmService extends Service {
         alarmManager.cancel(pendingIntent);
         // if the alarm is active, choose time and date of the alarm and
         // set it in the alarm manager
-        /*
+
         if (alarmInfo.isActive()) {
             Calendar c = Calendar.getInstance();
             if (alarmInfo.isShowingCurrentOrPastTime()) {
-                alarmInfo.DAYS_FROM_NOW += 7;
+                //alarmInfo.DAYS_FROM_NOW += 7;
             }
-            c.set(Calendar.HOUR_OF_DAY, alarmInfo.HOUR);
-            c.set(Calendar.MINUTE, alarmInfo.MINUTE);
-            c.add(Calendar.DATE, alarmInfo.DAYS_FROM_NOW);
+            c.set(Calendar.HOUR_OF_DAY, alarmInfo.getHour());
+            c.set(Calendar.MINUTE, alarmInfo.getMinute());
+            //c.add(Calendar.DATE, alarmInfo.DAYS_FROM_NOW);
             c.set(Calendar.SECOND, 0);
             c.set(Calendar.MILLISECOND, 0);
             long alarmTime = c.getTimeInMillis();
@@ -104,7 +106,18 @@ public class AlarmService extends Service {
             alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
 
         }
-        */
+
     }
+
+
+    public void alarmOlustur(int alarmId)
+    {
+        //İlgili alarmı getirir
+        AlarmDbHelper db = new AlarmDbHelper(AlarmService.this);
+        alarm=new AlarmModel();
+        alarm=db.getAlarm(alarmId);
+    }
+
+
 
 }

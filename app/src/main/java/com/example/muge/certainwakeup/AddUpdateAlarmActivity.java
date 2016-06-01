@@ -138,22 +138,22 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
         rbKriterYok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnDene.setClickable(false);
+                btnDene.setVisibility(View.GONE);
                 rgZorluk.setVisibility(View.GONE);
             }
         });
         rbSoru.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnDene.setClickable(true);
                 rgZorluk.setVisibility(View.GONE);
+                btnDene.setVisibility(View.VISIBLE);
             }
         });
         rbMat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnDene.setClickable(true);
                 rgZorluk.setVisibility(View.VISIBLE);
+                btnDene.setVisibility(View.VISIBLE);
             }
         });
 
@@ -190,6 +190,32 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
                     tvErtelemeSayisi.setText("0");
                 }
 
+
+            }
+        });
+
+        btnDene.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(AddUpdateAlarmActivity.this,EndAlarmMathEquationActivity.class);
+                intent.putExtra("alarm",-1);
+                int difLevel,stopCri;
+                if (rbSoru.isChecked()) {
+                    difLevel = 0;
+                    stopCri = 1;
+                }
+                else{
+                    stopCri=2;
+                    if(rbKolay.isChecked())
+                        difLevel = 1;
+                    else if(rbOrta.isChecked())
+                        difLevel=2;
+                    else difLevel = 3;
+                }
+
+                intent.putExtra("difficultyLevel",difLevel);
+                intent.putExtra("alarmStopCriter",stopCri);
+                startActivity(intent);
 
             }
         });
@@ -250,7 +276,6 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
                     newAlarm = new AlarmModel();
                     setAlarmContent();
 
-                    //TODO: buranın içerisinde alarmın sonlandırma kriteri bilgilerinin güncellenmesi de yapılacak
                     if (db.InsertAttachedAlarm(newAlarm.getHour(), newAlarm.getMinute(),
                             newAlarm.isMonday(), newAlarm.isTuesday(), newAlarm.isWednesday(), newAlarm.isThursday(),
                             newAlarm.isFriday(), newAlarm.isSaturday(), newAlarm.isSunday(), newAlarm.isActive(),newAlarm.getLabel(),
@@ -337,12 +362,17 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
 
     public void setRadioButtons()
     {
-        if (newAlarm.getStopCriter()==0)
+        if (newAlarm.getStopCriter()==0) {
             rbKriterYok.setChecked(true);
-        else if (newAlarm.getStopCriter()==1)
+            btnDene.setVisibility(View.GONE);
+        }
+        else if (newAlarm.getStopCriter()==1) {
             rbSoru.setChecked(true);
+            btnDene.setVisibility(View.VISIBLE);
+        }
         else {
             rbMat.setChecked(true);
+            btnDene.setVisibility(View.VISIBLE);
             if (newAlarm.getDifficulty()==1)
                 rbKolay.setChecked(true);
             else if(newAlarm.getDifficulty()==2)

@@ -4,6 +4,7 @@ package com.example.muge.certainwakeup;
 //import android.text.format.Time;
 
 import java.lang.Object;
+import java.util.Calendar;
 import java.util.Date;
 import java.sql.Time;
 /**
@@ -235,6 +236,16 @@ public class AlarmModel {
         else if (getMinute()<10)
             return getHour()+" : 0"+getMinute();
         return getHour()+" : "+getMinute();
+    }
+
+    public boolean isShowingCurrentOrPastTime() {
+        Calendar c = Calendar.getInstance();
+        if (c.get(Calendar.HOUR_OF_DAY) >= getHour()
+                && c.get(Calendar.MINUTE) >= getMinute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
