@@ -103,7 +103,8 @@ public class EndAlarmMathEquationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (answer.getText().toString().toLowerCase().equals(soru.getAnswer().toString()))//doğru bilindiyse kapatılsın
                 {
-                    Intent intent=new Intent(EndAlarmMathEquationActivity.this,MainActivity.class);
+                    Intent intent=new Intent(EndAlarmMathEquationActivity.this,ActiveAlarmActivity.class);
+                    intent.putExtra("isClose",true);
                     startActivity(intent);
                     /*
                     Intent intent=new Intent(EndAlarmMathEquationActivity.this,ActiveAlarmActivity.class);

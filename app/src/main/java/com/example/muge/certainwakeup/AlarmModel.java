@@ -4,9 +4,14 @@ package com.example.muge.certainwakeup;
 //import android.text.format.Time;
 
 import java.lang.Object;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.sql.Time;
+import java.util.List;
+
 /**
  * Created by muge on 22.3.2016.
  */
@@ -30,6 +35,9 @@ public class AlarmModel {
     private int difficulty;
     private boolean snooze;
     private int snoozeCount;
+    private int daysFromNow;
+    private List<Integer> days;
+
     public int getId() {
         return id;
     }
@@ -59,6 +67,7 @@ public class AlarmModel {
 
     public void setMonday(boolean monday) {
         this.monday = monday;
+
     }
 
     public boolean isTuesday() {
@@ -182,6 +191,7 @@ public class AlarmModel {
     }
 
     public AlarmModel(){
+        days = new ArrayList<>();
         setId(1);
         setHour(8);
         setMinute(0);
@@ -202,11 +212,13 @@ public class AlarmModel {
         setDifficulty(0);
         setSnooze(false);
         setSnoozeCount(0);
+        getDays();
 
     }
 
     public AlarmModel(int id,int hour,int minute,boolean mon,boolean tue,boolean wed,boolean thu,boolean fri,boolean str,boolean sun,boolean act,String label,String sound,String volume,boolean vibration,int stopCriter,int difficulty,boolean snooze,int snoozeCount)
     {
+        days = new ArrayList<>();
         setId(id);
         setHour(hour);
         setMinute(minute);
@@ -226,6 +238,7 @@ public class AlarmModel {
         setDifficulty(difficulty);
         setSnooze(snooze);
         setSnoozeCount(snoozeCount);
+        getDays();
     }
     @Override
     public String toString() {
@@ -246,6 +259,69 @@ public class AlarmModel {
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * Returns the number of days in between the weekdays passed as arguments.
+     * The day1 and day2 variables must be integers between 1 and 7. The result
+     * is the day difference between these two values. For instance if day1 has
+     * value 6 (Friday) and day2 has value 3 (Tuesday), the returned value will
+     * be 4 (since there is a 4 day difference between current Friday and next
+     * weeks Tuesday).
+     *
+     * @param day1
+     * @param day2
+     * @return
+     */
+    public int getDaysBetween(int day1, int day2) {
+        int counter = 0;
+        while (true) {
+            if (day1 == day2) {
+                return counter;
+            } else {
+                day1++;
+                if (day1 == 8) {
+                    day1 = 1;
+                }
+                counter++;
+            }
+        }
+    }
+
+    public void getDays()
+    {
+        days.clear();
+        if (isMonday())
+            days.add(2);
+        if (isTuesday())
+            days.add(3);
+        if (isWednesday())
+            days.add(4);
+        if (isThursday())
+            days.add(5);
+        if (isFriday())
+            days.add(6);
+        if (isSaturday())
+            days.add(7);
+        if (isSunday())
+            days.add(1);
+    }
+
+    public List<Integer> getDaysFromNow()//servis tarafında getDaysFromNow ile haftanın alarm kurulacak günleri döndürülecek
+    {
+        List<Integer> list = new ArrayList<>();
+        if (days.isEmpty())
+            return null;
+        Calendar c = Calendar.getInstance();
+
+        for (int day:days)
+        {
+            list.add(getDaysBetween(c.get(Calendar.DAY_OF_WEEK),day));
+        }
+
+        //Collections.sort(list);
+        return list;
     }
 
 }

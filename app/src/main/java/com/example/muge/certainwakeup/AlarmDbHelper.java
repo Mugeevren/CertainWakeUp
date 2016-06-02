@@ -84,7 +84,7 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         db.delete("AttachedAlarm","",null);
     }
 
-    //TODO: label
+
     //attached alarmları listeler
     public void GetAttachedAlarm(ArrayList<AlarmModel> alarms)
     {
@@ -106,6 +106,28 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
     }
+
+    //son eklenen attached alarmı getirir
+    public AlarmModel getLastInsertetdAttachedAlarm()
+    {
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery("SELECT * FROM AttachedAlarm", null);
+        cursor.moveToLast();
+        AlarmModel alarm;
+        if (cursor.getCount()!=0)
+        {
+            alarm=new AlarmModel(
+                    cursor.getInt(0),cursor.getInt(1),cursor.getInt(2),
+                    (cursor.getInt(3)!=0),(cursor.getInt(4)!=0),(cursor.getInt(5)!=0),
+                    (cursor.getInt(6)!=0),(cursor.getInt(7)!=0),(cursor.getInt(8)!=0),
+                    (cursor.getInt(9)!=0),(cursor.getInt(10)!=0),cursor.getString(11),
+                    cursor.getString(12),cursor.getString(13),(cursor.getInt(14)!=0),
+                    cursor.getInt(15),cursor.getInt(16),(cursor.getInt(17)!=0),cursor.getInt(18));
+            return alarm;
+        }
+        return null;
+    }
+
     public AlarmModel getAlarm(int id)
     {
         SQLiteDatabase db=this.getReadableDatabase();

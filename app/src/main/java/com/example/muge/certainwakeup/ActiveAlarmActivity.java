@@ -1,5 +1,6 @@
 package com.example.muge.certainwakeup;
 
+import android.app.Service;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -35,7 +36,6 @@ public class ActiveAlarmActivity extends AppCompatActivity {
     private static final String TAG = "ActiveAlarmActivity";
 
     private MediaPlayer player;
-    private Vibrator vibrator;
     private int snoozeCounter;
     private AlarmModel alarm;
     private TextView tvAlarmClock;
@@ -47,28 +47,51 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_active_alarm);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 
+        Button buttonSnooze = (Button) findViewById(R.id.btnSnoozeAlarm);
+
         tvAlarmClock = (TextView)findViewById(R.id.textClock);
 
 
         // get alarmId and snoozeCount from the intent
         extras = getIntent().getExtras();
         if (extras != null) {
-            alarmOlustur(extras.getInt("alarm"));
-            tvAlarmClock.setText(alarm.toString());
-            if (extras.getBoolean("isSnoozed",false)==true)//erteleme ile gelen alarm ise
-                snoozeCounter = extras.getInt("snoozeCounter");
-            else//ilk çalışı ise
+            if (extras.getBoolean("isClose",false))
             {
-                snoozeCounter = alarm.getSnoozeCount();
+                new SoundAlarm().execute();
+                new StopAlarm().execute();
+                Intent intent = new Intent(ActiveAlarmActivity.this, MainActivity.class);
+                startActivity(intent);
             }
+            else{
+                alarmOlustur(extras.getInt("alarm"));
+
+                if (extras.getBoolean("isSnoozed",false)==true)//erteleme ile gelen alarm ise
+                {
+                    snoozeCounter = extras.getInt("snoozeCounter");
+                    alarm.setMinute(alarm.getMinute()+(alarm.getSnoozeCount()-snoozeCounter));
+                }
+
+
+                else//ilk çalışı ise
+                {
+                    snoozeCounter = alarm.getSnoozeCount();
+                    if(snoozeCounter==0)
+                        buttonSnooze.setVisibility(View.GONE);
+                }
+
+                tvAlarmClock.setText(alarm.toString());
+                Log.d(TAG, "onCreate() - snoozeCounter = " + snoozeCounter);
+            }
+
         }
-        Log.d(TAG, "onCreate() - snoozeCounter = " + snoozeCounter);
+
         // set button listeners
         Button buttonOff = (Button) findViewById(R.id.btnStopAlarm);
         buttonOff.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (alarm.getStopCriter()==0) {
+                    new StopAlarm().execute();
                     Intent intent = new Intent(ActiveAlarmActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -76,15 +99,15 @@ public class ActiveAlarmActivity extends AppCompatActivity {
                     alarmOffIntent();
             }
         });
-        Button buttonSnooze = (Button) findViewById(R.id.btnSnoozeAlarm);
+
         buttonSnooze.setBackgroundColor(Color.rgb(0, 150, 150));
         buttonSnooze.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                extras.getBoolean("isSnoozed",true);
+                extras.putBoolean("isSnoozed",true);
                 extras.putInt("snoozeCounter",snoozeCounter);
-                alarmOffIntent();
-                //alarmSnooze(); // bu çalıştırılmalı
+                //alarmOffIntent();
+                alarmSnooze(); // bu çalıştırılmalı
             }
         });
 
@@ -127,24 +150,36 @@ public class ActiveAlarmActivity extends AppCompatActivity {
      */
     private void alarmSnooze() {
         new StopAlarm().execute();
-        snoozeCounter++;
+        snoozeCounter--;
         Log.d(TAG, "alarmSnooze() - snoozeCounter = " + snoozeCounter);
         // setup next snooze alarm time
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MINUTE, 1);//1 olan erteleme aralığı- TODO:kullanıcıdan alınabilsin
         long nextSnoozeTime = c.getTimeInMillis();
         // set new snooze alarm
-        Intent intent = new Intent(getApplicationContext(),
-                SnoozeReceiver.class);
-        intent.putExtra("SNOOZE_COUNTER", snoozeCounter);
+        //Intent intent = new Intent(ActiveAlarmActivity.this,
+                //AlarmService.class);
+        //intent.putExtra("snoozeCounter", snoozeCounter);
+        //intent.putExtra("issnooze",true);
+        //startService(intent);
+
+
+        Intent intent = new Intent(ActiveAlarmActivity.this, SnoozeReceiver.class);
+        intent.putExtra("snoozeCounter", snoozeCounter);
+        intent.putExtra("alarm", alarm.getId());
+        //intent.putExtra("alarm",alarmInfo.getId());
+        // create intent
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(), RequestCode, intent,
+                getApplicationContext(),(int)System.currentTimeMillis(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+        // get alarm manager
         AlarmManager alarmManager = (AlarmManager) getApplicationContext()
                 .getSystemService(Context.ALARM_SERVICE);
-        Log.d(TAG, "Snooze set to: " + c.getTime().toString());
-        alarmManager
-                .set(AlarmManager.RTC_WAKEUP, nextSnoozeTime, pendingIntent);
+        // cancel any previous alarms if set
+        alarmManager.cancel(pendingIntent);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, nextSnoozeTime, pendingIntent);
+
         finish();
     }
 
@@ -198,29 +233,6 @@ public class ActiveAlarmActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object... params) {
 
-            /*
-            Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-            if(alert == null){
-                // alert is null, using backup
-                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                if(alert == null){
-                    // alert backup is null, using 2nd backup
-                    alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-                }
-            }
-            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), alert);
-            AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-            int maxVolumeAlarm = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
-            int maxVolumeRing = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, maxVolumeAlarm,AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-            audioManager.setStreamVolume(AudioManager.STREAM_RING, maxVolumeRing,AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-            r.play();
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            long[] pattern = { 1000, 1000 };
-            vibrator.vibrate(pattern,0);
-            Toast.makeText(getApplicationContext(), "alarm started", Toast.LENGTH_LONG).show();
-*/
-
             play(ActiveAlarmActivity.this,getAlarmSound());
 
             Log.d(TAG, "Is playing: " + player.isPlaying());
@@ -238,7 +250,6 @@ public class ActiveAlarmActivity extends AppCompatActivity {
             player.stop();
             player.reset();
             player.release();
-            vibrator.cancel();
             return null;
         }
     }

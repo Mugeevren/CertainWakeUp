@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -281,6 +282,8 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
                             newAlarm.isFriday(), newAlarm.isSaturday(), newAlarm.isSunday(), newAlarm.isActive(),newAlarm.getLabel(),
                             newAlarm.getSound(),newAlarm.getVolume(),newAlarm.isVibration(),newAlarm.getStopCriter(),
                             newAlarm.getDifficulty(),newAlarm.isSnooze(),newAlarm.getSnoozeCount())) {
+                        newAlarm = db.getLastInsertetdAttachedAlarm();
+                        startAlarmService(newAlarm);
                         Intent intent = new Intent(AddUpdateAlarmActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else
@@ -298,6 +301,7 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
                             newAlarm.isFriday(), newAlarm.isSaturday(), newAlarm.isSunday(), newAlarm.isActive(),newAlarm.getLabel(),
                             newAlarm.getSound(),newAlarm.getVolume(),newAlarm.isVibration(),newAlarm.getStopCriter(),
                             newAlarm.getDifficulty(),newAlarm.isSnooze(),newAlarm.getSnoozeCount())) {
+                        startAlarmService(newAlarm);
                         Intent intent = new Intent(AddUpdateAlarmActivity.this, MainActivity.class);
                         startActivity(intent);
                     } else
@@ -380,6 +384,30 @@ public class AddUpdateAlarmActivity extends AppCompatActivity {
             else
                 rbZor.setChecked(true);
         }
+    }
+
+    /**
+     * Stop any active AlarmService instances and start a new one.
+     */
+    private void startAlarmService(AlarmModel alarm) {
+        Log.d("AddUpdateAlarmActivity", "startAlarmService()");
+        Intent intent = new Intent(this,
+                AlarmService.class);
+        intent.putExtra("snoozeCounter",alarm.getSnoozeCount() );
+        intent.putExtra("alarm",alarm.getId());
+        //this.stopService(intent);
+        this.startService(intent);
+    }
+    /**
+     * Stop any active AlarmService instances and start a new one.
+     */
+    private void stopAlarmService(AlarmModel alarm) {
+        Log.d("AddUpdateAlarmActivity", "stopAlarmService()");
+        Intent intent = new Intent(getApplicationContext(),
+                AlarmService.class);
+        intent.putExtra("snoozeCounter",0 );
+        intent.putExtra("alarm",alarm.getId());
+        getApplicationContext().stopService(intent);
     }
 
 

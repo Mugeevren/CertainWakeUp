@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by muge on 15.5.2016.
@@ -22,10 +23,17 @@ public class AlarmService extends Service {
     final static int RequestCode = 1;
     int snoozeCounter;
     AlarmModel alarm;
+    boolean issnooze;
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("servis stop:","servis nesnesi yok edildi");
     }
 
     /**
@@ -45,7 +53,10 @@ public class AlarmService extends Service {
         if (extras != null) {
             snoozeCounter = extras.getInt("snoozeCounter");
             alarmOlustur(extras.getInt("alarm"));
+            issnooze=extras.getBoolean("issnooze");
         }
+
+
 
 
         // set alarm
@@ -65,7 +76,7 @@ public class AlarmService extends Service {
         //startForeground(1, null);
 
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     /**
@@ -75,37 +86,81 @@ public class AlarmService extends Service {
      *            Information about the alarm being set.
      */
     private void setAlarm(AlarmModel alarmInfo) {
-        // set snooze counter
-        Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-        intent.putExtra("snoozeCounter", snoozeCounter);
-        intent.putExtra("alarm",alarmInfo.getId());
-        // create intent
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(), RequestCode, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        // get alarm manager
-        AlarmManager alarmManager = (AlarmManager) getApplicationContext()
-                .getSystemService(Context.ALARM_SERVICE);
-        // cancel any previous alarms if set
-        alarmManager.cancel(pendingIntent);
-        // if the alarm is active, choose time and date of the alarm and
-        // set it in the alarm manager
+        AlarmManager alarmManager;
+        PendingIntent pendingIntent;
+        if(issnooze==true)
+        {
+            Intent intent = new Intent(getApplicationContext(), SnoozeReceiver.class);
+            intent.putExtra("snoozeCounter", snoozeCounter);
+            //intent.putExtra("alarm",alarmInfo.getId());
+            // create intent
+            pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(),(int) System.currentTimeMillis(), intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            // get alarm manager
+            alarmManager = (AlarmManager) getApplicationContext()
+                    .getSystemService(Context.ALARM_SERVICE);
+            // cancel any previous alarms if set
+            alarmManager.cancel(pendingIntent);
+            // if the alarm is active, choose time and date of the alarm and
+            // set it in the alarm manager
+        }
+        else
+        {
+            // set snooze counter
+            Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+            intent.putExtra("snoozeCounter", snoozeCounter);
+            intent.putExtra("alarm",alarmInfo.getId());
+            // create intent
+            pendingIntent = PendingIntent.getBroadcast(
+                    getApplicationContext(),(int) System.currentTimeMillis(), intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            // get alarm manager
+            alarmManager = (AlarmManager) getApplicationContext()
+                    .getSystemService(Context.ALARM_SERVICE);
+            // cancel any previous alarms if set
+            alarmManager.cancel(pendingIntent);
+            // if the alarm is active, choose time and date of the alarm and
+            // set it in the alarm manager
 
-        if (alarmInfo.isActive()) {
-            Calendar c = Calendar.getInstance();
-            if (alarmInfo.isShowingCurrentOrPastTime()) {
-                //alarmInfo.DAYS_FROM_NOW += 7;
+            if (alarmInfo.isActive()) {
+                Calendar c = Calendar.getInstance();
+                List<Integer> daysFromNow = alarmInfo.getDaysFromNow();
+                c.set(Calendar.HOUR_OF_DAY, alarmInfo.getHour());
+                c.set(Calendar.MINUTE, alarmInfo.getMinute());
+                c.set(Calendar.SECOND, 0);
+                c.set(Calendar.MILLISECOND, 0);
+                long alarmTime;
+                int date = Calendar.DATE;
+                if (daysFromNow==null)
+                {
+                    if (alarmInfo.isShowingCurrentOrPastTime()) {
+                        c.add(date, 1);
+                    }
+                    alarmTime = c.getTimeInMillis();
+                    Log.d(TAG, "Alarm set to: " + c.getTime().toString());
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+                }
+                else
+                {
+                    if (daysFromNow.contains(0)&&alarmInfo.isShowingCurrentOrPastTime()) {
+                        daysFromNow.remove(new Integer(0));
+                        daysFromNow.add(new Integer(7));
+                    }
+                    for(int days:daysFromNow) {
+                        c.add(date, days);
+                        alarmTime = c.getTimeInMillis();
+                        Log.d(TAG, "Alarm set to: " + c.getTime().toString());
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+                    }
+                }
+
+
             }
-            c.set(Calendar.HOUR_OF_DAY, alarmInfo.getHour());
-            c.set(Calendar.MINUTE, alarmInfo.getMinute());
-            //c.add(Calendar.DATE, alarmInfo.DAYS_FROM_NOW);
-            c.set(Calendar.SECOND, 0);
-            c.set(Calendar.MILLISECOND, 0);
-            long alarmTime = c.getTimeInMillis();
-            Log.d(TAG, "Alarm set to: " + c.getTime().toString());
-            alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
 
         }
+
+
 
     }
 

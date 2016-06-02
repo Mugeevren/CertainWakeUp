@@ -143,47 +143,54 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
     public void onMondayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
         
         alarm.setMonday(vh.mon.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
     @Override
     public void onTuesdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
 
         alarm.setTuesday(vh.tue.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
 
     @Override
     public void onWednesdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
 
-        alarm.setWednesday(vh.tue.isChecked());
+        alarm.setWednesday(vh.wed.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
     
     @Override
     public void onThursdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
 
-        alarm.setThursday(vh.tue.isChecked());
+        alarm.setThursday(vh.thu.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
 
     @Override
     public void onFridayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
 
-        alarm.setFriday(vh.tue.isChecked());
+        alarm.setFriday(vh.fri.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
     
     @Override
     public void onSaturdayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
 
-        alarm.setSaturday(vh.tue.isChecked());
+        alarm.setSaturday(vh.sat.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
 
     @Override
     public void onSundayToggleButtonClickListener(int position, AlarmModel alarm, AlarmAdapter.ViewHolder vh) {
 
-        alarm.setSunday(vh.tue.isChecked());
+        alarm.setSunday(vh.sun.isChecked());
+        alarm.getDays();
         updateAlarm(alarm);
     }
 
@@ -237,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
     @Override
     public void onDeleteButtonClickListener(int position,final AlarmModel alarm,final AlarmAdapter.ViewHolder vh) {
 
+        stopAlarmService(alarm);
         alarmdb.deleteAlarm(alarm.getId());
         alarmdb.GetAttachedAlarm(alarms);
         refreshAdapter();
@@ -295,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements AlarmAdapter.Cust
                 AlarmService.class);
         intent.putExtra("snoozeCounter",alarm.getSnoozeCount() );
         intent.putExtra("alarm",alarm.getId());
-        this.stopService(intent);
+        //this.stopService(intent);
         this.startService(intent);
     }
     /**
